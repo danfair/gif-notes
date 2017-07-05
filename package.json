@@ -1,19 +1,19 @@
 {
-  "name": "musical-gif",
-  "version": "0.1.0",
+  "name": "server",
+  "version": "0.0.0",
   "private": true,
-  "dependencies": {
-    "react": "^15.6.1",
-    "react-dom": "^15.6.1",
-    "react-router": "^4.1.1",
-    "react-router-dom": "^4.1.1",
-    "react-scripts": "1.0.10",
-    "react-transition-group": "^1.2.0"
-  },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "node ./bin/www"
+  },
+  "dependencies": {
+    "body-parser": "~1.17.1",
+    "cookie-parser": "~1.4.3",
+    "cors": "^2.8.3",
+    "debug": "~2.6.3",
+    "express": "~4.15.2",
+    "jade": "~1.11.0",
+    "morgan": "~1.8.1",
+    "serve-favicon": "~2.4.2",
+    "spotify-web-api-node": "^2.4.0"
   }
 }

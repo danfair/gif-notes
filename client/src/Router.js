@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Route, Link, Switch } from 'react-router-dom';
-import { CSSTransitionGroup } from 'react-transition-group'
+import { CSSTransitionGroup } from 'react-transition-group';
 
 import Login from './components/Login';
 import PlayerContainer from './components/PlayerContainer';
@@ -25,8 +25,8 @@ class AppRouter extends Component {
             >
               <Switch key={location.key} location={location}>
                 <Route exact path="/" component={Login} />
-                <Route path="/player" component={PlayerContainer} />
-                <Route path="/settings" component={SettingsContainer} />
+                {/*<Route path="/user/:accessToken/:refreshToken" component={User} />
+                <Route path="/error/:errorMsg" component={Error} />*/}
               </Switch>
             </CSSTransitionGroup>
           )} />
