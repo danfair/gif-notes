@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
+import { Redirect } from 'react-router';
+import Cookies from 'universal-cookie';
 import Spotify from 'spotify-web-api-js';
 const spotifyApi = new Spotify();
+
+const cookies = new Cookies();
 
 class Login extends Component {
   constructor(props) {
@@ -8,39 +12,27 @@ class Login extends Component {
 
     this.state = {
       message: null,
-      accessToken: null
-    }
+      accessToken: null,
+      refreshToken: null
+    };
   }
 
   componentDidMount() {
-    // fetch('/users')
-    //   .then((response) => response.json())
-    //   .then((response) => {
-    //     this.setState({
-    //       message: response.message
-    //     })
-    //   })
-  }
-
-  spotifySignIn() {
-    // console.log('spotifysignin');
-    // spotifyApi.getMe()
-    //   .then((data) => {
-    //     console.log('yay', data);
-    //   }).catch((e) => {
-    //     console.log('nooo', e);
-    //   });
-    // fetch('/login')
-    //   .then((response) => response.json())
-    //   .then((response) => {
-    //     console.log('login response', response);
-    //   });
+    this.setState({
+      accessToken: cookies.get('at'),
+      refreshToken: cookies.get('rt')
+    });
   }
 
   render() {
+    if (this.state.accessToken && this.state.refreshToken) {
+      return <Redirect push to="/player" />
+    }
+
     return (
       <div>
         Login screen!
+        testprop: {this.props.testProp}
         <a href="http://localhost:3001/login">Login</a>
       </div>
     );

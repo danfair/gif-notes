@@ -4,7 +4,7 @@ var router = express.Router();
 const spotifyAuth = require('../config/spotifyAuth');
 const Spotify = require('spotify-web-api-node');
 const STATE_KEY = 'spotify_auth_state';
-const scopes = ['user-read-private', 'user-read-email'];
+const scopes = ['user-read-private', 'user-read-email', 'user-read-playback-state'];
 const spotifyApi = new Spotify({
   clientId: spotifyAuth.CLIENT_ID,
   clientSecret: spotifyAuth.CLIENT_SECRET,
@@ -40,11 +40,14 @@ router.get('/callback', (req, res) => {
 
       // use the access token to access the Spotify Web API
       spotifyApi.getMe().then(({ body }) => {
-        console.log(body);
+        console.log('body', body);
       });
 
+      res.cookie('at', access_token);
+      res.cookie('rt', refresh_token);
       // we can also pass the token to the browser to make requests from there
-      res.redirect(`http://localhost:3000/#/user/${access_token}/${refresh_token}`);
+      // res.redirect(`http://localhost:3000/#/user/${access_token}/${refresh_token}`);
+      res.redirect('http://localhost:3000/player');
     }).catch(err => {
       res.redirect('http://localhost:3000/#/error/invalid token');
     });

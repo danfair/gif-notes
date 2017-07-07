@@ -25,8 +25,8 @@ class AppRouter extends Component {
             >
               <Switch key={location.key} location={location}>
                 <Route exact path="/" component={Login} />
-                {/*<Route path="/user/:accessToken/:refreshToken" component={User} />
-                <Route path="/error/:errorMsg" component={Error} />*/}
+                <Route exact path="/player" component={PlayerContainer} />
+                {/*<Route path="/error/:errorMsg" component={Error} />*/}
               </Switch>
             </CSSTransitionGroup>
           )} />
