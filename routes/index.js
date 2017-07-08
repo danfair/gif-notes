@@ -1,5 +1,9 @@
 var express = require('express');
 var router = express.Router();
+var cors = require('cors');
+var https = require('https');
+var querystring = require('querystring');
+var needle = require('needle');
 
 const spotifyAuth = require('../config/spotifyAuth');
 const Spotify = require('spotify-web-api-node');
@@ -19,6 +23,28 @@ router.get('/login', (_, res) => {
   const state = generateRandomString(16);
   res.cookie(STATE_KEY, state);
   res.redirect(spotifyApi.createAuthorizeURL(scopes, state));
+});
+
+router.get('/refresh/:refreshToken', (req, res) => {
+  const encodedAuthString = new Buffer(`${spotifyAuth.CLIENT_ID}:${spotifyAuth.CLIENT_SECRET}`).toString('base64');
+  const postBody = querystring.stringify({
+    grant_type: 'refresh_token',
+    refresh_token: req.params.refreshToken
+  });
+
+  var options = {
+    headers: {
+      'Authorization': `Basic ${encodedAuthString}`
+    },
+  };
+
+  needle.post('https://accounts.spotify.com/api/token', postBody, options, (err, resp) => {
+    if (resp.statusCode == 200) {
+      res.json({
+        access_token: resp.body.access_token
+      });
+    }
+  });
 });
 
 router.get('/callback', (req, res) => {

@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
 import Cookies from 'universal-cookie';
-import Spotify from 'spotify-web-api-js';
-const spotifyApi = new Spotify();
 
 const cookies = new Cookies();
 

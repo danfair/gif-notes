@@ -4,7 +4,7 @@ import { CSSTransitionGroup } from 'react-transition-group';
 
 import Login from './components/Login';
 import PlayerContainer from './components/PlayerContainer';
-import SettingsContainer from './components/SettingsContainer';
+// import SettingsContainer from './components/SettingsContainer';
 
 class AppRouter extends Component {
   render() {

@@ -18,6 +18,7 @@ class Player extends Component {
     };
 
     this.getCurrentTrack = this.getCurrentTrack.bind(this);
+    this.updateToken = this.updateToken.bind(this);
   }
 
   componentDidMount() {
@@ -27,6 +28,20 @@ class Player extends Component {
     }, this.getCurrentTrack);
 
     this.songRefreshInterval = setInterval(this.getCurrentTrack, 5000);
+  }
+
+  updateToken() {
+    axios(`/refresh/${this.state.refreshToken}`)
+      .then((response) => {
+        this.setState({
+          accessToken: response.data.access_token
+        }, () => {
+          cookies.set('at', response.data.access_token);
+        })
+      })
+      .catch(function (error) {
+        console.log('error', error);
+      });
   }
 
   getCurrentTrack() {
@@ -48,6 +63,11 @@ class Player extends Component {
             songTitle: response.data.item.name,
             isActive: response.data.is_playing
           })
+        }
+      })
+      .catch((err) => {
+        if (err.response.data.error.message === 'The access token expired') {
+          this.updateToken();
         }
       })
   }

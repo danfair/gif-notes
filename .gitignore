@@ -22,3 +22,4 @@ yarn-debug.log*
 yarn-error.log*
 
 config/spotifyAuth.js
+client/src/config/spotifyAuth.js
