@@ -4,6 +4,8 @@ import createRemodal from 'react-remodal';
 import 'react-remodal/styles/main.css';
 import Cookies from 'universal-cookie';
 import Settings from '../components/Settings';
+import SpotifyPlayerContainer from './SpotifyPlayerContainer';
+import PlaylistPicker from './PlaylistPicker';
 
 const cookies = new Cookies();
 const Remodal = createRemodal();
@@ -27,13 +29,17 @@ class Player extends Component {
       songTitle: null,
       songArtist: null,
       isSettingsModalOpen: false,
-      settings: {}
+      settings: {},
+      isPlaylistPickerOpen: false,
+      playlistId: null
     };
 
     this.getCurrentTrack = this.getCurrentTrack.bind(this);
     this.updateToken = this.updateToken.bind(this);
     this.toggleSettingsModal = this.toggleSettingsModal.bind(this);
+    this.togglePlaylistPicker = this.togglePlaylistPicker.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
+    this.updatePlaylistUri = this.updatePlaylistUri.bind(this);
   }
 
   componentDidMount() {
@@ -104,11 +110,23 @@ class Player extends Component {
     });
   }
 
+  togglePlaylistPicker() {
+    this.setState({
+      isPlaylistPickerOpen: !this.state.isPlaylistPickerOpen
+    });
+  }
+
   updateSettings(settings) {
     this.setState({
       settings
     }, () => {
       cookies.set('gn_settings', settings);
+    });
+  }
+
+  updatePlaylistUri(playlistUri) {
+    this.setState({
+      playlistUri
     });
   }
 
@@ -124,12 +142,23 @@ class Player extends Component {
         <div>Search terms: {this.state.settings.searchTerms}</div>
         <div>Show Player: {this.state.settings.showPlayer ? 'true' : 'false'}</div>
         <div>Show Artist/Song: {this.state.settings.showArtistSong ? 'true' : 'false'}</div>
+        <button onClick={this.togglePlaylistPicker}>Pick playlist</button>
+        <div>Playlist ID: {this.state.playlistId}</div>
         <Remodal isOpen={this.state.isSettingsModalOpen} onClose={this.toggleSettingsModal}>
           <Settings 
             settings={this.state.settings}
             updateSettings={this.updateSettings}
           />
         </Remodal>
+        <Remodal isOpen={this.state.isPlaylistPickerOpen} onClose={this.togglePlaylistPicker}>
+          <PlaylistPicker
+            accessToken={this.state.accessToken}
+            updatePlaylistUri={this.updatePlaylistUri}
+          />
+        </Remodal>  
+        <SpotifyPlayerContainer
+          playlistUri={this.state.playlistUri}
+        />
       </div>
     );
   }

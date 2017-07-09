@@ -4,7 +4,6 @@ import { CSSTransitionGroup } from 'react-transition-group';
 
 import Login from './components/Login';
 import PlayerContainer from './components/PlayerContainer';
-// import SettingsContainer from './components/SettingsContainer';
 
 class AppRouter extends Component {
   render() {
@@ -26,7 +25,6 @@ class AppRouter extends Component {
               <Switch key={location.key} location={location}>
                 <Route exact path="/" component={Login} />
                 <Route exact path="/player" component={PlayerContainer} />
-                {/*<Route path="/error/:errorMsg" component={Error} />*/}
               </Switch>
             </CSSTransitionGroup>
           )} />

@@ -30,7 +30,6 @@ class Login extends Component {
     return (
       <div>
         Login screen!
-        testprop: {this.props.testProp}
         <a href="http://localhost:3001/login">Login</a>
       </div>
     );
