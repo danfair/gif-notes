@@ -1,8 +1,19 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import createRemodal from 'react-remodal';
+import 'react-remodal/styles/main.css';
 import Cookies from 'universal-cookie';
-const cookies = new Cookies();
+import Settings from '../components/Settings';
 
+const cookies = new Cookies();
+const Remodal = createRemodal();
+const defaultSettings = {
+  transitionTime: 5,   // 1-10s
+  gifRating: 'pg13',   // g, pg, pg13, r
+  searchTerms: 'both',   // artist, song, both
+  showPlayer: true,
+  showArtistSong: true
+};
 
 class Player extends Component {
   constructor(props) {
@@ -14,19 +25,33 @@ class Player extends Component {
       refreshToken: null,
       songId: null,
       songTitle: null,
-      songArtist: null
+      songArtist: null,
+      isSettingsModalOpen: false,
+      settings: {}
     };
 
     this.getCurrentTrack = this.getCurrentTrack.bind(this);
     this.updateToken = this.updateToken.bind(this);
+    this.toggleSettingsModal = this.toggleSettingsModal.bind(this);
+    this.updateSettings = this.updateSettings.bind(this);
   }
 
   componentDidMount() {
+    let settings;
+    if (cookies.get('gn_settings')) {
+      settings = cookies.get('gn_settings');
+    } else {
+      settings = defaultSettings;
+      cookies.set('gn_settings', defaultSettings);
+    }
+
     this.setState({
-      accessToken: cookies.get('at'),
-      refreshToken: cookies.get('rt')
+      accessToken: cookies.get('gn_at'),
+      refreshToken: cookies.get('gn_rt'),
+      settings
     }, this.getCurrentTrack);
 
+    // TODO: replace updating data with sockets?
     this.songRefreshInterval = setInterval(this.getCurrentTrack, 5000);
   }
 
@@ -36,8 +61,8 @@ class Player extends Component {
         this.setState({
           accessToken: response.data.access_token
         }, () => {
-          cookies.set('at', response.data.access_token);
-        })
+          cookies.set('gn_at', response.data.access_token);
+        });
       })
       .catch(function (error) {
         console.log('error', error);
@@ -51,10 +76,9 @@ class Player extends Component {
       }
     })
       .then((response) => {
-        console.log('response', response);
         if (response.data.item.id !== this.state.songId || response.data.is_playing !== this.state.isActive)  {
           const artists = response.data.item.artists.map((artist) => {
-            return artist.name
+            return artist.name;
           }).join(', ');
 
           this.setState({
@@ -62,33 +86,52 @@ class Player extends Component {
             songArtist: artists,
             songTitle: response.data.item.name,
             isActive: response.data.is_playing
-          })
+          });
         }
       })
       .catch((err) => {
-        if (err.response.data.error.message === 'The access token expired') {
+        if (err.response && err.response.data && err.response.data.error.message === 'The access token expired') {
           this.updateToken();
+        } else {
+          window.location.replace('/');
         }
-      })
+      });
+  }
+
+  toggleSettingsModal() {
+    this.setState({
+      isSettingsModalOpen: !this.state.isSettingsModalOpen
+    });
+  }
+
+  updateSettings(settings) {
+    this.setState({
+      settings
+    }, () => {
+      cookies.set('gn_settings', settings);
+    });
   }
 
   render() {
-    if (this.state.isActive) {
-      return (
-        <div>
-          Player screen!
-          <div>Artists: {this.state.songArtist}</div>
-          <div>Song: {this.state.songTitle}</div>
-          <button onClick={this.getCurrentTrack}>Get currently played track</button>
-        </div>
-      );
-    } else {
-      return (
-        <div>Not playing a song.
-          <button onClick={this.getCurrentTrack}>Get currently played track</button>
-        </div>
-      )
-    }
+    return (
+      <div>
+        Player screen!
+        <div>Artists: {this.state.songArtist ? this.state.songArtist : 'n/a'}</div>
+        <div>Song: {this.state.songTitle ? this.state.songTitle : 'n/a'}</div>
+        <button onClick={this.toggleSettingsModal}>Toggle settings</button>
+        <div>Transition time: {this.state.settings.transitionTime}</div>
+        <div>Max GIF rating: {this.state.settings.gifRating}</div>
+        <div>Search terms: {this.state.settings.searchTerms}</div>
+        <div>Show Player: {this.state.settings.showPlayer ? 'true' : 'false'}</div>
+        <div>Show Artist/Song: {this.state.settings.showArtistSong ? 'true' : 'false'}</div>
+        <Remodal isOpen={this.state.isSettingsModalOpen} onClose={this.toggleSettingsModal}>
+          <Settings 
+            settings={this.state.settings}
+            updateSettings={this.updateSettings}
+          />
+        </Remodal>
+      </div>
+    );
   }
 }
 

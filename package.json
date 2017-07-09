@@ -17,6 +17,7 @@
     "needle": "^1.6.0",
     "qa": "0.0.1",
     "querystring": "^0.2.0",
+    "react-remodal": "^1.0.3",
     "serve-favicon": "~2.4.2",
     "spotify-web-api-node": "^2.4.0"
   }

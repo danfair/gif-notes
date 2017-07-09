@@ -69,8 +69,8 @@ router.get('/callback', (req, res) => {
         console.log('body', body);
       });
 
-      res.cookie('at', access_token);
-      res.cookie('rt', refresh_token);
+      res.cookie('gn_at', access_token);
+      res.cookie('gn_rt', refresh_token);
       // we can also pass the token to the browser to make requests from there
       // res.redirect(`http://localhost:3000/#/user/${access_token}/${refresh_token}`);
       res.redirect('http://localhost:3000/player');

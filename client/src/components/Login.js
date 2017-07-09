@@ -17,8 +17,8 @@ class Login extends Component {
 
   componentDidMount() {
     this.setState({
-      accessToken: cookies.get('at'),
-      refreshToken: cookies.get('rt')
+      accessToken: cookies.get('gn_at'),
+      refreshToken: cookies.get('gn_rt')
     });
   }
 
