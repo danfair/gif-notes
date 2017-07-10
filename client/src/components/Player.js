@@ -6,6 +6,8 @@ import Cookies from 'universal-cookie';
 import Settings from '../components/Settings';
 import SpotifyPlayerContainer from './SpotifyPlayerContainer';
 import PlaylistPicker from './PlaylistPicker';
+import GifRotator from './GifRotator';
+import querystring from 'querystring';
 
 const cookies = new Cookies();
 const Remodal = createRemodal();
@@ -23,7 +25,7 @@ class Player extends Component {
 
     this.state = {
       accessToken: null,
-      isActive: false,
+      isPlaying: false,
       refreshToken: null,
       songId: null,
       songTitle: null,
@@ -31,7 +33,9 @@ class Player extends Component {
       isSettingsModalOpen: false,
       settings: {},
       isPlaylistPickerOpen: false,
-      playlistId: null
+      playlistId: null, 
+      gifs: [],
+      gifQueryOffset: 0
     };
 
     this.getCurrentTrack = this.getCurrentTrack.bind(this);
@@ -51,10 +55,13 @@ class Player extends Component {
       cookies.set('gn_settings', defaultSettings);
     }
 
+    let playlistUri = cookies.get('gn_pu') || null;
+
     this.setState({
       accessToken: cookies.get('gn_at'),
       refreshToken: cookies.get('gn_rt'),
-      settings
+      settings, 
+      playlistUri
     }, this.getCurrentTrack);
 
     // TODO: replace updating data with sockets?
@@ -82,7 +89,8 @@ class Player extends Component {
       }
     })
       .then((response) => {
-        if (response.data.item.id !== this.state.songId || response.data.is_playing !== this.state.isActive)  {
+        // update info if the song id is different than id in state
+        if (response.data.item.id !== this.state.songId || response.data.is_playing !== this.state.isPlaying)  {
           const artists = response.data.item.artists.map((artist) => {
             return artist.name;
           }).join(', ');
@@ -91,7 +99,10 @@ class Player extends Component {
             songId: response.data.item.id,
             songArtist: artists,
             songTitle: response.data.item.name,
-            isActive: response.data.is_playing
+            isPlaying: response.data.is_playing,
+            playlistUri: response.data.item.uri
+          }, () => {
+            this.updateGifs(artists, response.data.item.name);
           });
         }
       })
@@ -99,7 +110,8 @@ class Player extends Component {
         if (err.response && err.response.data && err.response.data.error.message === 'The access token expired') {
           this.updateToken();
         } else {
-          window.location.replace('/');
+          // window.location.replace('/');
+          console.error(err);
         }
       });
   }
@@ -116,6 +128,32 @@ class Player extends Component {
     });
   }
 
+  updateGifs(artists, songTitle) {
+    // get the search terms based on user settings
+    let gifQuery;
+    if (this.state.settings.searchTerms === 'both') {
+      gifQuery = encodeURIComponent(artists + ' ' + songTitle);
+    } else if (this.state.settings.searchTerms === 'artist') {
+      gifQuery = encodeURIComponent(artists);
+    } else {
+      gifQuery = encodeURIComponent(songTitle);
+    }
+
+    let queryString = querystring.stringify({
+      query: gifQuery,
+      gifRating: this.state.settings.gifRating,
+      offset: this.state.gifQueryOffset
+    });
+
+    axios(`/gifs?${queryString}`)
+      .then((response) => {
+        console.log('update gifs response', response);
+        this.setState({
+          gifs: response.data
+        });
+      });
+  }
+
   updateSettings(settings) {
     this.setState({
       settings
@@ -126,7 +164,10 @@ class Player extends Component {
 
   updatePlaylistUri(playlistUri) {
     this.setState({
-      playlistUri
+      playlistUri,
+      isPlaylistPickerOpen: false
+    }, () => {
+      cookies.set('gn_pu', playlistUri);
     });
   }
 
@@ -134,6 +175,7 @@ class Player extends Component {
     return (
       <div>
         Player screen!
+        <div>Is playing: {this.state.isPlaying ? 'yes' : 'no'}</div>
         <div>Artists: {this.state.songArtist ? this.state.songArtist : 'n/a'}</div>
         <div>Song: {this.state.songTitle ? this.state.songTitle : 'n/a'}</div>
         <button onClick={this.toggleSettingsModal}>Toggle settings</button>
@@ -143,7 +185,12 @@ class Player extends Component {
         <div>Show Player: {this.state.settings.showPlayer ? 'true' : 'false'}</div>
         <div>Show Artist/Song: {this.state.settings.showArtistSong ? 'true' : 'false'}</div>
         <button onClick={this.togglePlaylistPicker}>Pick playlist</button>
-        <div>Playlist ID: {this.state.playlistId}</div>
+        <div>Playlist URI: {this.state.playlistUri}</div>
+        <div>Number of GIFs: {this.state.gifs.length}</div>
+        <GifRotator
+          gifs={this.state.gifs}
+          transitionTime={this.state.settings.transitionTime}
+        />
         <Remodal isOpen={this.state.isSettingsModalOpen} onClose={this.toggleSettingsModal}>
           <Settings 
             settings={this.state.settings}
@@ -156,9 +203,11 @@ class Player extends Component {
             updatePlaylistUri={this.updatePlaylistUri}
           />
         </Remodal>  
-        <SpotifyPlayerContainer
-          playlistUri={this.state.playlistUri}
-        />
+        {this.state.playlistUri && 
+          <SpotifyPlayerContainer
+            playlistUri={this.state.playlistUri}
+          />
+        }
       </div>
     );
   }

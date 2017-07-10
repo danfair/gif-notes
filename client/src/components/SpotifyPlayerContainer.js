@@ -7,7 +7,7 @@ class SpotifyPlayerContainer extends Component {
       <div>
         <SpotifyPlayer
           uri={this.props.playlistUri}
-          size='large'
+          size='compact'
           view='coverart'
           theme='black'
         />
