@@ -44,6 +44,7 @@ class Player extends Component {
     this.togglePlaylistPicker = this.togglePlaylistPicker.bind(this);
     this.updateSettings = this.updateSettings.bind(this);
     this.updatePlaylistUri = this.updatePlaylistUri.bind(this);
+    this.getMoreGifs = this.getMoreGifs.bind(this);
   }
 
   componentDidMount() {
@@ -100,7 +101,8 @@ class Player extends Component {
             songArtist: artists,
             songTitle: response.data.item.name,
             isPlaying: response.data.is_playing,
-            playlistUri: response.data.item.uri
+            playlistUri: response.data.item.uri,
+            gifQueryOffset: 0
           }, () => {
             this.updateGifs(artists, response.data.item.name);
           });
@@ -128,8 +130,7 @@ class Player extends Component {
     });
   }
 
-  updateGifs(artists, songTitle) {
-    // get the search terms based on user settings
+  getGifQueryString(artists, songTitle) {
     let gifQuery;
     if (this.state.settings.searchTerms === 'both') {
       gifQuery = encodeURIComponent(artists + ' ' + songTitle);
@@ -145,12 +146,34 @@ class Player extends Component {
       offset: this.state.gifQueryOffset
     });
 
+    return queryString;
+  }
+
+  updateGifs(artists, songTitle) {
+    const queryString = this.getGifQueryString(artists, songTitle);
+
     axios(`/gifs?${queryString}`)
       .then((response) => {
         console.log('update gifs response', response);
         this.setState({
-          gifs: response.data
+          gifs: response.data,
+          gifQueryOffset: this.state.gifQueryOffset + response.data.length || response.data.length
         });
+      });
+  }
+
+  getMoreGifs() {
+    const queryString = this.getGifQueryString(this.state.songArtist, this.state.songTitle);
+
+    axios(`/gifs?${queryString}`)
+      .then((response) => {
+        console.log('update gifs response', response);
+        this.setState((prevState, props) => {
+          return {
+            gifs: prevState.gifs.concat(response.data),
+            gifQueryOffset: prevState.gifQueryOffset + response.data.length
+          }
+        })
       });
   }
 
@@ -187,9 +210,12 @@ class Player extends Component {
         <button onClick={this.togglePlaylistPicker}>Pick playlist</button>
         <div>Playlist URI: {this.state.playlistUri}</div>
         <div>Number of GIFs: {this.state.gifs.length}</div>
+        <div>Gif query offset: {this.state.gifQueryOffset}</div>
         <GifRotator
           gifs={this.state.gifs}
           transitionTime={this.state.settings.transitionTime}
+          getMoreGifs={this.getMoreGifs}
+          gifQueryOffset={this.state.gifQueryOffset}
         />
         <Remodal isOpen={this.state.isSettingsModalOpen} onClose={this.toggleSettingsModal}>
           <Settings 

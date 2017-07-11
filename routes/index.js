@@ -1,20 +1,19 @@
-var express = require('express');
-var router = express.Router();
-var cors = require('cors');
-var https = require('https');
-var querystring = require('querystring');
-var needle = require('needle');
+const express = require('express');
+const router = express.Router();
+const cors = require('cors');
+const https = require('https');
+const querystring = require('querystring');
+const needle = require('needle');
 
-const spotifyAuth = require('../config/spotifyAuth');
+const auth = require('../config/auth');
 const Spotify = require('spotify-web-api-node');
 const STATE_KEY = 'spotify_auth_state';
-const scopes = ['user-read-private', 'user-read-email', 'user-read-playback-state'];
+const spotifyScopes = ['user-read-private', 'user-read-email', 'user-read-playback-state'];
 const spotifyApi = new Spotify({
-  clientId: spotifyAuth.CLIENT_ID,
-  clientSecret: spotifyAuth.CLIENT_SECRET,
-  redirectUri: spotifyAuth.REDIRECT_URI
+  clientId: auth.CLIENT_ID,
+  clientSecret: auth.CLIENT_SECRET,
+  redirectUri: auth.REDIRECT_URI
 });
-
 
 /** Generates a random string containing numbers and letters of N characters */
 const generateRandomString = N => (Math.random().toString(36)+Array(N).join('0')).slice(2, N+2);
@@ -22,11 +21,11 @@ const generateRandomString = N => (Math.random().toString(36)+Array(N).join('0')
 router.get('/login', (_, res) => {
   const state = generateRandomString(16);
   res.cookie(STATE_KEY, state);
-  res.redirect(spotifyApi.createAuthorizeURL(scopes, state));
+  res.redirect(spotifyApi.createAuthorizeURL(spotifyScopes, state));
 });
 
 router.get('/refresh/:refreshToken', (req, res) => {
-  const encodedAuthString = new Buffer(`${spotifyAuth.CLIENT_ID}:${spotifyAuth.CLIENT_SECRET}`).toString('base64');
+  const encodedAuthString = new Buffer(`${auth.CLIENT_ID}:${auth.CLIENT_SECRET}`).toString('base64');
   const postBody = querystring.stringify({
     grant_type: 'refresh_token',
     refresh_token: req.params.refreshToken
@@ -44,6 +43,19 @@ router.get('/refresh/:refreshToken', (req, res) => {
         access_token: resp.body.access_token
       });
     }
+  });
+});
+
+router.get('/gifs', (req, res) => {
+  let queryString = querystring.stringify({
+    api_key: auth.GIPHY_API_KEY,
+    q: req.query.query,
+    rating: req.query.gifRating,
+    offset: req.query.offset
+  });
+  
+  needle.get(`https://api.giphy.com/v1/gifs/search?${queryString}`, (err, resp) => {
+    res.json(resp.body.data);
   });
 });
 
