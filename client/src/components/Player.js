@@ -104,7 +104,13 @@ class Player extends Component {
             playlistUri: response.data.item.uri,
             gifQueryOffset: 0
           }, () => {
-            this.updateGifs(artists, response.data.item.name);
+            // if the player is now playing, get new gifs
+            // otherwise get sad gifs
+            if (response.data.is_playing) {
+              this.updateGifs(artists, response.data.item.name);
+            } else {
+              this.updateGifs('sad', 'sad');
+            }
           });
         }
       })
@@ -154,7 +160,6 @@ class Player extends Component {
 
     axios(`/gifs?${queryString}`)
       .then((response) => {
-        console.log('update gifs response', response);
         this.setState({
           gifs: response.data,
           gifQueryOffset: this.state.gifQueryOffset + response.data.length || response.data.length
@@ -163,11 +168,10 @@ class Player extends Component {
   }
 
   getMoreGifs() {
-    const queryString = this.getGifQueryString(this.state.songArtist, this.state.songTitle);
+    const queryString = this.state.isPlaying ? this.getGifQueryString(this.state.songArtist, this.state.songTitle) : 'sad';
 
     axios(`/gifs?${queryString}`)
       .then((response) => {
-        console.log('update gifs response', response);
         this.setState((prevState, props) => {
           return {
             gifs: prevState.gifs.concat(response.data),
@@ -197,20 +201,8 @@ class Player extends Component {
   render() {
     return (
       <div>
-        Player screen!
-        <div>Is playing: {this.state.isPlaying ? 'yes' : 'no'}</div>
-        <div>Artists: {this.state.songArtist ? this.state.songArtist : 'n/a'}</div>
-        <div>Song: {this.state.songTitle ? this.state.songTitle : 'n/a'}</div>
         <button onClick={this.toggleSettingsModal}>Toggle settings</button>
-        <div>Transition time: {this.state.settings.transitionTime}</div>
-        <div>Max GIF rating: {this.state.settings.gifRating}</div>
-        <div>Search terms: {this.state.settings.searchTerms}</div>
-        <div>Show Player: {this.state.settings.showPlayer ? 'true' : 'false'}</div>
-        <div>Show Artist/Song: {this.state.settings.showArtistSong ? 'true' : 'false'}</div>
         <button onClick={this.togglePlaylistPicker}>Pick playlist</button>
-        <div>Playlist URI: {this.state.playlistUri}</div>
-        <div>Number of GIFs: {this.state.gifs.length}</div>
-        <div>Gif query offset: {this.state.gifQueryOffset}</div>
         <GifRotator
           gifs={this.state.gifs}
           transitionTime={this.state.settings.transitionTime}
