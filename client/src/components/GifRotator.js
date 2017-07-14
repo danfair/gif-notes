@@ -17,14 +17,21 @@ class GifRotator extends Component {
 
       this.rotateGifInterval = setInterval(() => {
         this.setState({
-          activeGifIndex: this.state.activeGifIndex + 1,
-          nextGifIndex: this.state.nextGifIndex + 1
+          activeGifIndex: this.state.activeGifIndex + 1
         }, () => {
           if (this.state.activeGifIndex > this.props.gifQueryOffset - 5) {
             this.props.getMoreGifs();
           }
         });
       }, nextProps.transitionTime * 1000);
+    }
+
+    if (nextProps.resetActiveGif) {
+      this.setState({
+        activeGifIndex: 0
+      }, () => {
+        this.props.clearResetActiveGif();
+      });
     }
   }
 

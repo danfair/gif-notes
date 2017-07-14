@@ -35,7 +35,8 @@ class Player extends Component {
       isPlaylistPickerOpen: false,
       playlistId: null, 
       gifs: [],
-      gifQueryOffset: 0
+      gifQueryOffset: 0,
+      resetActiveGif: false
     };
 
     this.getCurrentTrack = this.getCurrentTrack.bind(this);
@@ -45,6 +46,7 @@ class Player extends Component {
     this.updateSettings = this.updateSettings.bind(this);
     this.updatePlaylistUri = this.updatePlaylistUri.bind(this);
     this.getMoreGifs = this.getMoreGifs.bind(this);
+    this.clearResetActiveGif = this.clearResetActiveGif.bind(this);
   }
 
   componentDidMount() {
@@ -102,7 +104,8 @@ class Player extends Component {
             songTitle: response.data.item.name,
             isPlaying: response.data.is_playing,
             playlistUri: response.data.item.uri,
-            gifQueryOffset: 0
+            gifQueryOffset: 0,
+            resetActiveGif: true
           }, () => {
             // if the player is now playing, get new gifs
             // otherwise get sad gifs
@@ -139,7 +142,13 @@ class Player extends Component {
   getGifQueryString(artists, songTitle) {
     let gifQuery;
     if (this.state.settings.searchTerms === 'both') {
-      gifQuery = encodeURIComponent(artists + ' ' + songTitle);
+      // mix it up so it's not always the same gifs
+      // for same artists
+      if (Math.random() > 0.5) {
+        gifQuery = encodeURIComponent(artists + ' ' + songTitle);
+      } else {
+        gifQuery = encodeURIComponent(songTitle + ' ' + artists);
+      }
     } else if (this.state.settings.searchTerms === 'artist') {
       gifQuery = encodeURIComponent(artists);
     } else {
@@ -198,6 +207,12 @@ class Player extends Component {
     });
   }
 
+  clearResetActiveGif() {
+    this.setState({
+      resetActiveGif: false
+    })
+  }
+
   render() {
     return (
       <div>
@@ -208,6 +223,8 @@ class Player extends Component {
           transitionTime={this.state.settings.transitionTime}
           getMoreGifs={this.getMoreGifs}
           gifQueryOffset={this.state.gifQueryOffset}
+          resetActiveGif={this.state.resetActiveGif}
+          clearResetActiveGif={this.clearResetActiveGif}
         />
         <Remodal isOpen={this.state.isSettingsModalOpen} onClose={this.toggleSettingsModal}>
           <Settings 
