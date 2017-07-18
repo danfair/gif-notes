@@ -1,28 +1,123 @@
-.fade-enter {
-  opacity: 0;
-  z-index: 1;
-  transform: translate(50px, 0);  
-}
+*,
+*:before,
+*:after {
+  -moz-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility; }
 
-.fade-enter.fade-enter-active {
-  opacity: 1;
-  transform: translate(0, 0);
-  transition: opacity 250ms ease-in, transform 250ms ease-in;
-}
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 16px; }
 
-.fade-leave {
-  opacity: 1;
-  transform: translate(0, 0);
+.btn {
+  appearance: none;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  font-family: "Raleway", sans-serif;
+  font-size: 0.75em;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-decoration: none; }
+
+.btn--green {
+  background-color: #29b283;
+  color: white;
+  transition: background-color 0.3s ease-in-out; }
+  .btn--green:hover {
+    background-color: #1f8964; }
+
+.btn__icon {
+  width: 24px;
+  margin-right: 9px; }
+
+.card-row {
+  margin-top: -100px; }
+  .card-row .container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap; }
+
+.card-row__card {
+  padding: 36px 18px;
+  background-color: white;
+  box-shadow: #bbb 0px 0px 4px 1px;
+  margin-bottom: 18px;
+  box-sizing: border-box;
+  text-align: center; }
+  @media screen and (min-width: 600px) {
+    .card-row__card {
+      width: calc(33% - 12px); } }
+
+.card-row__card-icon {
+  height: 150px;
+  width: 150px;
+  max-width: 80%;
+  background-size: contain;
+  background-position: center center;
+  background-repeat: no-repeat;
+  margin-left: auto;
+  margin-right: auto; }
+
+.card-row__card-title {
+  color: #60407f;
+  font-family: "Pacifico", cursive;
+  font-size: 1.75em; }
+
+.card-row__card-description {
+  font-family: "Raleway", sans-serif;
+  font-size: 1em;
+  line-height: 1.6; }
+
+.hero {
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url(./img/how_i_taught_ya.png);
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+  @media screen and (min-width: 600px) {
+    .hero {
+      min-height: calc(100vh - 300px);
+      height: 600px; } }
+
+.hero__title {
+  color: white;
+  font-family: "Raleway", sans-serif;
+  font-size: 1.625em;
+  font-weight: 300;
+  line-height: 1.3;
+  max-width: 500px;
+  text-align: center; }
+  @media screen and (min-width: 600px) {
+    .hero__title {
+      font-size: 2em; } }
+
+.main-nav {
+  padding: 24px 0;
   position: absolute;
+  width: 100%;
   top: 0;
-  left: 0;
-}
+  left: 0; }
+  .main-nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; }
 
-.fade-leave.fade-leave-active {
-  opacity: 0;
-  transform: translate(-50px, 0);
-  transition: opacity 250ms ease-in, transform 250ms ease-in;
-}
+.main-nav__logo {
+  font-family: "Pacifico", cursive;
+  font-size: 1.75em;
+  color: white;
+  font-weight: normal;
+  margin: 0; }
 
 .gif {
   position: absolute;
@@ -34,15 +129,34 @@
   transition: opacity 0.7s ease-in-out;
   background-size: cover;
   background-repeat: no-repeat;
-  background-position: center;
-}
+  background-position: center; }
 
-  .gif.active-gif {
-    opacity: 1;
-    z-index: 5;
-  }
+.gif.active-gif {
+  opacity: 1;
+  z-index: 5; }
 
-  .gif.prev-gif {
-    opacity: 0;
-    z-index: 10;
-  }
+.gif.prev-gif {
+  opacity: 0;
+  z-index: 10; }
+
+.fade-enter {
+  opacity: 0;
+  z-index: 1;
+  transform: translate(50px, 0); }
+
+.fade-enter.fade-enter-active {
+  opacity: 1;
+  transform: translate(0, 0);
+  transition: opacity 250ms ease-in, transform 250ms ease-in; }
+
+.fade-leave {
+  opacity: 1;
+  transform: translate(0, 0);
+  position: absolute;
+  top: 0;
+  left: 0; }
+
+.fade-leave.fade-leave-active {
+  opacity: 0;
+  transform: translate(-50px, 0);
+  transition: opacity 250ms ease-in, transform 250ms ease-in; }

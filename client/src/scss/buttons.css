@@ -1,0 +1,22 @@
+.btn {
+  appearance: none;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  font-family: "Raleway", sans-serif;
+  font-size: 0.75em;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-decoration: none; }
+
+.btn--green {
+  background-color: #29b283;
+  color: white;
+  transition: background-color 0.3s ease-in-out; }
+  .btn--green:hover {
+    background-color: #1f8964; }
+
+.btn__icon {
+  width: 24px;
+  margin-right: 9px; }

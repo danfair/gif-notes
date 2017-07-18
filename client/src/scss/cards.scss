@@ -1,0 +1,46 @@
+@import './variables.scss';
+
+.card-row {
+  margin-top: -100px;
+  .container {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+  }
+}
+
+  .card-row__card {
+    padding: 36px 18px;
+    background-color: white;
+    box-shadow: #bbb 0px 0px 4px 1px;
+    margin-bottom: 18px;
+    box-sizing: border-box;
+    text-align: center;
+
+    @media screen and (min-width: 600px) {
+      width: calc(33% - 12px);
+    }
+  }
+
+    .card-row__card-icon {
+      height: 150px;
+      width: 150px;
+      max-width: 80%;
+      background-size: contain;
+      background-position: center center;
+      background-repeat: no-repeat;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .card-row__card-title {
+      color: $color-purple;
+      font-family: $font-script;
+      font-size: 1.75em;
+    }
+
+    .card-row__card-description {
+      font-family: $font-sans;
+      font-size: 1em;
+      line-height: 1.6;
+    }

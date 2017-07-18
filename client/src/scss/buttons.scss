@@ -1,0 +1,29 @@
+@import './variables.scss';
+
+.btn {
+  appearance: none;
+  padding: 6px 12px;
+  display: flex;
+  align-items: center;
+  font-family: $font-sans;
+  font-size: 0.75em;
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  text-decoration: none;
+}
+
+  .btn--green {
+    background-color: $color-green;
+    color: white;
+    transition: background-color 0.3s ease-in-out;
+
+    &:hover {
+      background-color: darken($color-green, 10%);
+    }
+  }
+
+  .btn__icon {
+    width: 24px;
+    margin-right: 9px;
+  }

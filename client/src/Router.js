@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { CSSTransitionGroup } from 'react-transition-group';
 
-import Login from './components/Login';
+import LoginPage from './components/LoginPage';
 import PlayerContainer from './components/PlayerContainer';
 
 class AppRouter extends Component {
@@ -16,7 +16,7 @@ class AppRouter extends Component {
             transitionLeaveTimeout={300}
           >
             <Switch key={location.key} location={location}>
-              <Route exact path="/" component={Login} />
+              <Route exact path="/" component={LoginPage} />
               <Route exact path="/player" component={PlayerContainer} />
             </Switch>
           </CSSTransitionGroup>

@@ -7,9 +7,11 @@
     "querystring": "^0.2.0",
     "react": "^15.6.1",
     "react-dom": "^15.6.1",
+    "react-remodal": "^1.0.3",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
     "react-scripts": "1.0.10",
+    "react-spotify-player": "^1.0.1",
     "react-transition-group": "^1.2.0",
     "spotify-web-api-js": "^0.22.0",
     "universal-cookie": "^2.0.8"
@@ -18,7 +20,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "build-css": "node-sass-chokidar src/ -o src/",
+    "watch-css": "npm run build-css && node-sass-chokidar src/ -o src/ --watch --recursive"
   },
   "proxy": "http://localhost:3001"
 }

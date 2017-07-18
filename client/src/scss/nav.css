@@ -1,0 +1,17 @@
+.main-nav {
+  padding: 24px 0;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0; }
+  .main-nav .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; }
+
+.main-nav__logo {
+  font-family: "Pacifico", cursive;
+  font-size: 1.75em;
+  color: white;
+  font-weight: normal;
+  margin: 0; }
