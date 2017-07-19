@@ -179,7 +179,7 @@ class Player extends Component {
   getMoreGifs() {
     const queryString = this.state.isPlaying ? this.getGifQueryString(this.state.songArtist, this.state.songTitle) : 'sad';
 
-    axios(`/gifs?${queryString}`)
+    axios(`/gifs?query=${queryString}`)
       .then((response) => {
         this.setState((prevState, props) => {
           return {
