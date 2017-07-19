@@ -47,9 +47,7 @@ class GifRotator extends Component {
               key={index}
             />
           )
-        })
-          
-        }
+        })}
       </div>
     );
   }
