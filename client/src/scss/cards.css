@@ -1,5 +1,7 @@
 .card-row {
-  margin-top: -100px; }
+  margin-top: -100px;
+  position: relative;
+  z-index: 5; }
   .card-row .container {
     display: flex;
     justify-content: space-between;
@@ -18,7 +20,7 @@
 
 .card-row__card-icon {
   height: 150px;
-  width: 150px;
+  width: 130px;
   max-width: 80%;
   background-size: contain;
   background-position: center center;
@@ -34,4 +36,5 @@
 .card-row__card-description {
   font-family: "Raleway", sans-serif;
   font-size: 1em;
-  line-height: 1.6; }
+  line-height: 1.6;
+  margin-bottom: 0; }

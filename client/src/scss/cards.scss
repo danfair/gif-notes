@@ -2,6 +2,9 @@
 
 .card-row {
   margin-top: -100px;
+  position: relative;
+  z-index: 5;
+  
   .container {
     display: flex;
     justify-content: space-between;
@@ -24,7 +27,7 @@
 
     .card-row__card-icon {
       height: 150px;
-      width: 150px;
+      width: 130px;
       max-width: 80%;
       background-size: contain;
       background-position: center center;
@@ -43,4 +46,5 @@
       font-family: $font-sans;
       font-size: 1em;
       line-height: 1.6;
+      margin-bottom: 0;
     }

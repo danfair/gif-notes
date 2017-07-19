@@ -2,22 +2,30 @@ import React, { Component } from 'react';
 import NavHeader from './NavHeader';
 import axios from 'axios';
 import bgImage from '../img/how_i_taught_ya.png';
+import HeroGifBackground from './HeroGifBackground';
 
 class Hero extends Component {
   constructor(props) {
     super(props);
     
     this.state = {
-      gifs: []
+      gifs: [],
+      activeGif: 0
     }
   }
   componentDidMount() {
     const homePageGifQueryString = encodeURIComponent('fun yay');
     
-    axios(`/gifs?${homePageGifQueryString}`)
+    axios(`/gifs?query=${homePageGifQueryString}`)
       .then((response) => {
         this.setState({
           gifs: response.data
+        }, () => {
+          this.gifRotatorInterval = setInterval(() => {
+            this.setState({
+              activeGif: this.state.activeGif < this.state.gifs.length - 1 ? this.state.activeGif + 1 : 0
+            });
+          }, 6000)
         });
       })
       .catch((err) => {
@@ -27,7 +35,11 @@ class Hero extends Component {
   render() {
     return (
       <div className="hero">
-        <NavHeader />
+        <HeroGifBackground 
+          gifs={this.state.gifs} 
+          activeGif={this.state.activeGif}
+        />
+        <NavHeader accessToken={this.props.accessToken} />
         <div className="hero__content">
           <h1 className="hero__title">{this.props.title}</h1>
         </div>

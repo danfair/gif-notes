@@ -13,7 +13,7 @@ module.exports = {
     },
     {
       title: 'Enjoy the randomness',
-      description: 'Not totally random. GIFs are based on a search of the currently playing artist and/or song.',
+      description: 'Well...not totally random. GIFs are based on a search of the artist and/or song.',
       icon: 'crazy_no_attrib'
     }
   ]

@@ -3,6 +3,7 @@ import { Redirect } from 'react-router';
 import Cookies from 'universal-cookie';
 import Hero from './Hero';
 import CardRow from './CardRow';
+import Footer from './Footer';
 import frontPageData from '../data/frontPage';
 
 const cookies = new Cookies();
@@ -34,10 +35,12 @@ class Login extends Component {
       <div className="login-page">
         <Hero
           title={frontPageData.title}
+          accessToken={this.state.accessToken}
         />
         <CardRow
           cards={frontPageData.cardData}
         />
+        <Footer />
       </div>
     );
   }

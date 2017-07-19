@@ -1,3 +1,5 @@
+@import './variables.scss';
+
 *,
 *:before,
 *:after {
@@ -8,6 +10,10 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+}
+
+body {
+  background-color: $color-light-gray;
 }
 
 .container {
