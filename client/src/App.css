@@ -1,3 +1,6 @@
+* {
+  box-sizing: border-box; }
+
 *,
 *:before,
 *:after {
@@ -74,6 +77,12 @@ body {
   color: #60407f;
   font-family: "Pacifico", cursive;
   font-size: 1.75em; }
+  @media screen and (min-width: 600px) {
+    .card-row__card-title {
+      font-size: 1.3em; } }
+  @media screen and (min-width: 720px) {
+    .card-row__card-title {
+      font-size: 1.75em; } }
 
 .card-row__card-description {
   font-family: "Raleway", sans-serif;
@@ -87,6 +96,26 @@ body {
   font-family: "Raleway", sans-serif;
   font-size: 1em;
   text-align: center; }
+
+.gif-rotator__gif {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 0.7s ease-in-out;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center; }
+
+.gif-rotator__gif.active-gif {
+  opacity: 1;
+  z-index: 1; }
+
+.gif-rotator__gif.prev-gif {
+  opacity: 0;
+  z-index: 2; }
 
 .hero {
   background-size: cover;
@@ -173,25 +202,130 @@ body {
   font-weight: normal;
   margin: 0; }
 
-.gif {
+.player__playing-info {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 18px;
+  color: white;
+  z-index: 5;
+  text-align: right;
+  max-width: 300px;
+  transform: translateY(20px);
+  opacity: 0;
+  transition: all 0.3s ease-in-out; }
+  .player__playing-info.open {
+    transform: translateY(0);
+    opacity: 1; }
+  .player__playing-info h1 {
+    font-size: 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1.3; }
+  .player__playing-info h2 {
+    font-size: 0.75rem;
+    font-weight: normal;
+    margin: 0;
+    line-height: 1.3; }
+
+.player__giphy-img {
+  position: absolute;
+  bottom: 6px;
+  right: 6px;
+  width: 100px;
+  z-index: 5; }
+
+.player__overlay {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  opacity: 0;
-  transition: opacity 0.7s ease-in-out;
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center; }
+  background-color: #60407f;
+  opacity: 0.5;
+  z-index: 3; }
 
-.gif.active-gif {
-  opacity: 1;
-  z-index: 5; }
+.menu-button {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  z-index: 5;
+  appearance: none;
+  border: 0;
+  background-color: transparent;
+  height: 48px;
+  width: 48px; }
+  .menu-button img {
+    width: 100%; }
 
-.gif.prev-gif {
-  opacity: 0;
-  z-index: 10; }
+.spotify-player {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 10;
+  transform: translateY(100%);
+  transition: transform 0.3s ease-in-out; }
+  .spotify-player.open {
+    transform: translateY(0); }
+    .spotify-player.open iframe {
+      opacity: 1;
+      height: 80px;
+      max-height: 80px; }
+  .spotify-player iframe {
+    vertical-align: bottom;
+    display: block;
+    opacity: 0;
+    height: 0;
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease-in-out; }
+
+.spotify-player__btn-shelf {
+  position: absolute;
+  bottom: 100%;
+  left: 0;
+  width: 100%;
+  padding: 0 6px; }
+
+.spotify-player__btn {
+  background-color: rgba(96, 64, 127, 0.8);
+  color: white;
+  font-family: "Raleway", sans-serif;
+  text-transform: uppercase;
+  border-radius: 5px 5px 0 0;
+  border: 0;
+  margin: 0 6px;
+  padding: 6px 9px;
+  font-weight: bold;
+  transition: background-color 0.3s ease-in-out; }
+  .spotify-player__btn:hover {
+    background-color: #60407f; }
+  .spotify-player__btn:focus, .spotify-player__btn:active {
+    outline: 0;
+    background-color: #7a51a1; }
+
+.spotify-player__close {
+  position: absolute;
+  right: -11px;
+  bottom: -11px;
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  background-color: rgba(96, 64, 127, 0.85);
+  border: 1px solid #60407f;
+  transition: background-color 0.3s ease-in-out; }
+  .spotify-player__close:hover {
+    background-color: #60407f; }
+  .spotify-player__close:focus, .spotify-player__close:active {
+    outline: 0;
+    background-color: #7a51a1; }
+  .spotify-player__close img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50%; }
 
 .fade-enter {
   opacity: 0;

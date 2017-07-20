@@ -37,7 +37,7 @@ class GifRotator extends Component {
 
   render() {
     return (
-      <div>
+      <div className="gif-rotator">
         {this.props.gifs.length > 0 && this.props.gifs.map((gif, index) => {
           return (
             <Gif

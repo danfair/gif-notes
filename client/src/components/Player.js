@@ -1,32 +1,28 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import createRemodal from 'react-remodal';
-import 'react-remodal/styles/main.css';
+import { Redirect } from 'react-router';
+import Modal from 'react-awesome-modal';
 import Cookies from 'universal-cookie';
 import Settings from '../components/Settings';
 import SpotifyPlayerContainer from './SpotifyPlayerContainer';
 import PlaylistPicker from './PlaylistPicker';
+import PlayerSongInfo from './PlayerSongInfo';
 import GifRotator from './GifRotator';
 import querystring from 'querystring';
+import defaultSettings from '../data/defaultSettings';
+import hamburgerIcon from '../img/hamburger.png';
+import poweredByGiphyImg from '../img/giphy.png';
 
 const cookies = new Cookies();
-const Remodal = createRemodal();
-const defaultSettings = {
-  transitionTime: 5,   // 1-10s
-  gifRating: 'pg13',   // g, pg, pg13, r
-  searchTerms: 'both',   // artist, song, both
-  showPlayer: true,
-  showArtistSong: true
-};
 
 class Player extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      accessToken: null,
+      accessToken: cookies.get('gn_at'),
       isPlaying: false,
-      refreshToken: null,
+      refreshToken: cookies.get('gn_rt'),
       songId: null,
       songTitle: null,
       songArtist: null,
@@ -47,6 +43,7 @@ class Player extends Component {
     this.updatePlaylistUri = this.updatePlaylistUri.bind(this);
     this.getMoreGifs = this.getMoreGifs.bind(this);
     this.clearResetActiveGif = this.clearResetActiveGif.bind(this);
+    this.toggleSpotifyPlayer = this.toggleSpotifyPlayer.bind(this);
   }
 
   componentDidMount() {
@@ -61,14 +58,12 @@ class Player extends Component {
     let playlistUri = cookies.get('gn_pu') || null;
 
     this.setState({
-      accessToken: cookies.get('gn_at'),
-      refreshToken: cookies.get('gn_rt'),
       settings, 
       playlistUri
     }, this.getCurrentTrack);
 
     // TODO: replace updating data with sockets?
-    this.songRefreshInterval = setInterval(this.getCurrentTrack, 5000);
+    this.songRefreshInterval = setInterval(this.getCurrentTrack, 4000);
   }
 
   updateToken() {
@@ -130,6 +125,14 @@ class Player extends Component {
   toggleSettingsModal() {
     this.setState({
       isSettingsModalOpen: !this.state.isSettingsModalOpen
+    });
+  }
+
+  toggleSpotifyPlayer() {
+    this.setState((prevState, props) => {
+      let settings = prevState.settings;
+      settings.showPlayer = !settings.showPlayer;
+      return {settings};
     });
   }
 
@@ -214,10 +217,20 @@ class Player extends Component {
   }
 
   render() {
+    if (!this.state.accessToken || !this.state.refreshToken) {
+      return <Redirect push to="/" />
+    }
+
     return (
       <div>
-        <button onClick={this.toggleSettingsModal}>Toggle settings</button>
-        <button onClick={this.togglePlaylistPicker}>Pick playlist</button>
+        <button className="menu-button" onClick={this.toggleSettingsModal}>
+          <img src={hamburgerIcon} className="menu-button__icon" />
+        </button>
+        <PlayerSongInfo
+          songArtist={this.state.songArtist}
+          songTitle={this.state.songTitle}
+          showArtistSong={this.state.settings.showArtistSong}
+        />
         <GifRotator
           gifs={this.state.gifs}
           transitionTime={this.state.settings.transitionTime}
@@ -226,23 +239,30 @@ class Player extends Component {
           resetActiveGif={this.state.resetActiveGif}
           clearResetActiveGif={this.clearResetActiveGif}
         />
-        <Remodal isOpen={this.state.isSettingsModalOpen} onClose={this.toggleSettingsModal}>
+        {this.state.playlistUri && 
+          <div className="spotify-player-wrapper">
+            <SpotifyPlayerContainer
+              playlistUri={this.state.playlistUri}
+              toggleSpotifyPlayer={this.toggleSpotifyPlayer}
+              togglePlaylistPicker={this.togglePlaylistPicker}
+              showPlayer={this.state.settings.showPlayer}
+            />
+          </div>
+        }
+        <img src={poweredByGiphyImg} className="player__giphy-img" />
+        <div className="player__overlay"></div>
+        <Modal visible={this.state.isSettingsModalOpen} width="600" height="600" effect="fadeInUp" onClickAway={this.toggleSettingsModal}>
           <Settings 
             settings={this.state.settings}
             updateSettings={this.updateSettings}
           />
-        </Remodal>
-        <Remodal isOpen={this.state.isPlaylistPickerOpen} onClose={this.togglePlaylistPicker}>
+        </Modal>
+        <Modal visible={this.state.isPlaylistPickerOpen} width="600" height="600" effect="fadeInUp" onClickAway={this.togglePlaylistPicker}>
           <PlaylistPicker
             accessToken={this.state.accessToken}
             updatePlaylistUri={this.updatePlaylistUri}
           />
-        </Remodal>  
-        {this.state.playlistUri && 
-          <SpotifyPlayerContainer
-            playlistUri={this.state.playlistUri}
-          />
-        }
+        </Modal>  
       </div>
     );
   }

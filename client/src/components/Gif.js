@@ -15,7 +15,7 @@ class Gif extends Component {
     }
     
     return (
-      <div style={bgStyle} className={`gif ${iframeClassName}`}></div>
+      <div style={bgStyle} className={`gif-rotator__gif gif ${iframeClassName}`}></div>
     );
   }
 }

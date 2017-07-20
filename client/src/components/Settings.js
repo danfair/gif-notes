@@ -27,12 +27,17 @@ class Settings extends Component {
         <form>
           <div>
             <label>GIF duration</label>
-            <input 
-              type="number" 
-              ref={transitionInput => this.transitionInput = transitionInput} 
+            <select 
+              ref={transitionInput => this.transitionInput = transitionInput}
               onChange={this.updateSettings} 
+              name="gif-transition"
               value={this.props.settings.transitionTime}
-            />
+            >
+              <option value="4">4</option>
+              <option value="6">6</option>
+              <option value="8">8</option>
+              <option value="10">10</option>
+            </select>
           </div>
           <div>
             <label>Maximum GIF rating</label>
@@ -81,7 +86,7 @@ class Settings extends Component {
               name="show-artist-song"
               defaultChecked={this.props.settings.showArtistSong}
             >
-            </input>
+            </input>{this.props.settings.showArtistSong}
           </div>
 
         </form>

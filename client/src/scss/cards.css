@@ -32,6 +32,12 @@
   color: #60407f;
   font-family: "Pacifico", cursive;
   font-size: 1.75em; }
+  @media screen and (min-width: 600px) {
+    .card-row__card-title {
+      font-size: 1.3em; } }
+  @media screen and (min-width: 720px) {
+    .card-row__card-title {
+      font-size: 1.75em; } }
 
 .card-row__card-description {
   font-family: "Raleway", sans-serif;

@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import NavHeader from './NavHeader';
 import axios from 'axios';
-import bgImage from '../img/how_i_taught_ya.png';
 import HeroGifBackground from './HeroGifBackground';
 
 class Hero extends Component {
@@ -14,7 +13,7 @@ class Hero extends Component {
     }
   }
   componentDidMount() {
-    const homePageGifQueryString = encodeURIComponent('fun yay');
+    const homePageGifQueryString = encodeURIComponent('fun music');
     
     axios(`/gifs?query=${homePageGifQueryString}`)
       .then((response) => {
@@ -31,6 +30,9 @@ class Hero extends Component {
       .catch((err) => {
         console.error(err);
       })
+  }
+  componentWillUnmount() {
+    clearInterval(this.gifRotatorInterval);
   }
   render() {
     return (

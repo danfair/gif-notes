@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Redirect } from 'react-router';
 import Cookies from 'universal-cookie';
 import Hero from './Hero';
 import CardRow from './CardRow';
