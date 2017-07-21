@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { Redirect } from 'react-router';
+
+import axios from 'axios';
 import Modal from 'react-awesome-modal';
 import Cookies from 'universal-cookie';
+import querystring from 'querystring';
+
 import Settings from '../components/Settings';
 import SpotifyPlayerContainer from './SpotifyPlayerContainer';
 import PlaylistPicker from './PlaylistPicker';
 import PlayerSongInfo from './PlayerSongInfo';
 import GifRotator from './GifRotator';
-import querystring from 'querystring';
+
 import defaultSettings from '../data/defaultSettings';
 import hamburgerIcon from '../img/hamburger.png';
 import poweredByGiphyImg from '../img/giphy.png';
-
 const cookies = new Cookies();
 
 class Player extends Component {
@@ -224,7 +226,7 @@ class Player extends Component {
     return (
       <div>
         <button className="menu-button" onClick={this.toggleSettingsModal}>
-          <img src={hamburgerIcon} className="menu-button__icon" />
+          <img src={hamburgerIcon} alt="Menu" className="menu-button__icon" />
         </button>
         <PlayerSongInfo
           songArtist={this.state.songArtist}
@@ -249,15 +251,30 @@ class Player extends Component {
             />
           </div>
         }
-        <img src={poweredByGiphyImg} className="player__giphy-img" />
+        <img src={poweredByGiphyImg} alt="Powered by Giphy" className="player__giphy-img" />
         <div className="player__overlay"></div>
-        <Modal visible={this.state.isSettingsModalOpen} width="600" height="600" effect="fadeInUp" onClickAway={this.toggleSettingsModal}>
-          <Settings 
-            settings={this.state.settings}
-            updateSettings={this.updateSettings}
-          />
-        </Modal>
-        <Modal visible={this.state.isPlaylistPickerOpen} width="600" height="600" effect="fadeInUp" onClickAway={this.togglePlaylistPicker}>
+        <div className="modal-container">
+          <Modal 
+            visible={this.state.isSettingsModalOpen} 
+            width="600" 
+            height="600" 
+            effect="fadeInUp" 
+            onClickAway={this.toggleSettingsModal}
+          >
+            <Settings 
+              settings={this.state.settings}
+              updateSettings={this.updateSettings}
+              closeSettingsModal={this.toggleSettingsModal}
+            />
+          </Modal>
+        </div>
+        <Modal 
+          visible={this.state.isPlaylistPickerOpen} 
+          width="600" 
+          height="600" 
+          effect="fadeInUp" 
+          onClickAway={this.togglePlaylistPicker}
+        >
           <PlaylistPicker
             accessToken={this.state.accessToken}
             updatePlaylistUri={this.updatePlaylistUri}

@@ -17,7 +17,6 @@ class PlaylistPicker extends Component {
       }
     })
       .then((response) => {
-        console.log('response', response);
         this.setState({
           playlists: response.data.items
         })

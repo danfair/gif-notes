@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SpotifyPlayer from 'react-spotify-player';
 import closeIcon from '../img/close.png';
+
 class SpotifyPlayerContainer extends Component {
   render() {
     let statusClassName = this.props.showPlayer === true ? 'spotify-player open' : 'spotify-player';

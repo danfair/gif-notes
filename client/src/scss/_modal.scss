@@ -1,0 +1,15 @@
+.modal-container {
+  & > div > div {
+    background-color: rgba(0,0,0,0.85);
+    & > div {
+      color: white;
+      background-color: transparent !important;
+      box-shadow: none !important;
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100% !important;
+      width: 100% !important;
+    }
+  }
+}

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 
 class CardRow extends Component {
   render() {
-    console.log(this.props.cards);
     return (
       <section className="card-row">
         <div className="container">
