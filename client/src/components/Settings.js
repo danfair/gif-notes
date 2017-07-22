@@ -24,15 +24,15 @@ class Settings extends Component {
 
   render() {
     return (
-      <div className="settings">
+      <div className="modal__content">
         <button 
           onClick={this.props.closeSettingsModal}
-          className="settings__close-button"
+          className="modal__close-button"
         >
           Close modal
           <img src={closeIcon} alt="close" />
         </button>
-        <h1 className="settings__title">Settings</h1>
+        <h1 className="modal__title">Settings</h1>
         <form className="settings__form">
           <div className="row--full">
             <div className="pre-label">GIF duration</div>
@@ -43,8 +43,8 @@ class Settings extends Component {
               onChange={this.updateSettings} 
               name="gif-transition"
               value={this.props.settings.transitionTime}
-              min="1"
-              max="10"
+              min="4"
+              max="12"
               step="1"
               className="gn__input-range"
             >
@@ -98,7 +98,6 @@ class Settings extends Component {
             </div>
           </div>
           <div className="row--half">
-
             <div className="pre-label">Show Artist &amp; Song</div>
             <div className="gn__checkbox">
               <label>
@@ -113,7 +112,6 @@ class Settings extends Component {
               </label>
             </div>
           </div>
-
         </form>
       </div>
     );

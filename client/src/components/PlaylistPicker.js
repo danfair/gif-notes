@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import closeIcon from '../img/close.png';
 
 class PlaylistPicker extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      playlists: null
+      playlists: []
     };
   }
 
@@ -25,18 +26,28 @@ class PlaylistPicker extends Component {
 
   render() {
     return (
-      <div>
-        accessToken: {this.props.accessToken}
-        {this.state.playlists && this.state.playlists.map((playlist, index) => {
-          return (
-            <button 
-              key={index}
-              onClick={() => {this.props.updatePlaylistUri(playlist.uri)}}
-            >
-                {playlist.name}
-            </button>
-          )
-        })}
+      <div className="modal__content">
+        <button 
+          onClick={this.props.closePlaylistPicker}
+          className="modal__close-button"
+        >
+          Close modal
+          <img src={closeIcon} alt="close" />
+        </button>
+        <h1 className="modal__title">Playlists</h1>
+        <div className="playlists">
+          {this.state.playlists.map((playlist, index) => {
+            return (
+              <button 
+                key={index}
+                className="playlist"
+                onClick={() => {this.props.updatePlaylistUri(playlist.uri)}}
+              >
+                  {playlist.name}
+              </button>
+            )
+          })}
+        </div>
       </div>
     );
   }

@@ -9,14 +9,18 @@ class Gif extends Component {
     if (this.props.activeGifIndex === this.props.gifId) {
       iframeClassName = 'active-gif';
       bgStyle = {backgroundImage: `url(${this.props.gifObject.images.original.url})`};
-    } else if (this.props.activeGifIndex - 1 === this.props.gifId) {
+    } else if (this.props.activeGifIndex - 1 === this.props.gifId || this.props.activeGifIndex + 1 === this.props.gifId) {
       iframeClassName = 'prev-gif';
       bgStyle = {backgroundImage: `url(${this.props.gifObject.images.original.url})`};
     }
     
-    return (
-      <div style={bgStyle} className={`gif-rotator__gif gif ${iframeClassName}`}></div>
-    );
+    if (this.props.activeGifIndex <= this.props.gifId + 1) {
+      return (
+        <div style={bgStyle} className={`gif-rotator__gif gif ${iframeClassName}`}></div>
+      );
+    } else {
+      return null;
+    }
   }
 }
 

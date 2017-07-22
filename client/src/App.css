@@ -234,6 +234,22 @@ body {
   background-image: linear-gradient(to bottom, #865eae 0, #60407f 100%);
   /* W3C */ }
 
+.gif-rotator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center; }
+
+.gif-rotator__bg {
+  color: white;
+  font-size: 100px;
+  font-family: "Pacifico", cursive;
+  opacity: 0.2; }
+
 .gif-rotator__gif {
   position: absolute;
   top: 0;
@@ -241,7 +257,6 @@ body {
   width: 100%;
   height: 100%;
   opacity: 0;
-  transition: opacity 0.7s ease-in-out;
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center; }
@@ -252,7 +267,8 @@ body {
 
 .gif-rotator__gif.prev-gif {
   opacity: 0;
-  z-index: 2; }
+  z-index: 2;
+  transition: opacity 0.7s ease-in-out; }
 
 .hero {
   background-size: cover;
@@ -332,6 +348,38 @@ body {
     height: 100% !important;
     width: 100% !important; }
 
+.modal__content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  max-width: 100%;
+  padding: 20px; }
+
+.modal__title {
+  font-family: "Pacifico", cursive;
+  font-size: 2.5em;
+  margin-top: 0;
+  margin-bottom: 0.625rem; }
+
+.modal__close-button {
+  appearance: none;
+  border: 0;
+  background-color: transparent;
+  height: 36px;
+  width: 36px;
+  position: fixed;
+  top: 40px;
+  right: 12px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999999999;
+  font-size: 0; }
+  .modal__close-button img {
+    width: 100%; }
+
 .main-nav {
   padding: 24px 0;
   position: absolute;
@@ -350,6 +398,33 @@ body {
   color: white;
   font-weight: normal;
   margin: 0; }
+
+.not-playing {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  align-items: center;
+  align-content: center;
+  text-align: center;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4; }
+  .not-playing p {
+    font-family: "Raleway", sans-serif; }
+
+.not-playing__title {
+  font-family: "Pacifico", cursive;
+  font-size: 2.5em;
+  width: 100%;
+  margin: 0;
+  line-height: 1; }
 
 .player__playing-info {
   position: absolute;
@@ -408,20 +483,29 @@ body {
   .menu-button img {
     width: 100%; }
 
-.settings {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  max-width: 100%;
-  padding: 20px; }
+.playlists {
+  display: flex;
+  flex-wrap: wrap;
+  max-height: 400px;
+  overflow-y: scroll; }
 
-.settings__title {
-  font-family: "Pacifico", cursive;
-  font-size: 2.5em;
-  margin-top: 0;
-  margin-bottom: 0.625rem; }
+.playlist {
+  width: 100%;
+  padding: 1rem;
+  appearance: none;
+  background-color: transparent;
+  border: 0;
+  color: white;
+  font-family: "Raleway", sans-serif;
+  font-size: 1rem;
+  transition: background-color 0.3s ease-in;
+  text-align: left; }
+  .playlist:hover, .playlist:active {
+    background-color: rgba(255, 255, 255, 0.1);
+    cursor: pointer; }
+  @media screen and (min-width: 720px) {
+    .playlist {
+      width: 50%; } }
 
 .settings__form {
   display: flex;
@@ -445,23 +529,6 @@ body {
     margin-bottom: 12px;
     font-family: "Raleway", sans-serif;
     font-size: 0.875rem; }
-
-.settings__close-button {
-  appearance: none;
-  border: 0;
-  background-color: transparent;
-  height: 36px;
-  width: 36px;
-  position: fixed;
-  top: 40px;
-  right: 12px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999999999;
-  font-size: 0; }
-  .settings__close-button img {
-    width: 100%; }
 
 .spotify-player {
   position: absolute;
@@ -530,6 +597,41 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 50%; }
+
+.spotify-player__play-instructions {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  display: flex;
+  align-items: flex-start;
+  animation: flash linear 2s 5; }
+  .spotify-player__play-instructions img {
+    width: 50px; }
+  .spotify-player__play-instructions div {
+    font-family: "Raleway", sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    color: white;
+    width: 130px;
+    padding-left: 5px;
+    transition: opacity 0.3s ease-in-out;
+    transform: translateY(-6px); }
+
+@-webkit-keyframes flash {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: .1; }
+  100% {
+    opacity: 1; } }
+
+@keyframes flash {
+  0% {
+    opacity: 1; }
+  50% {
+    opacity: .1; }
+  100% {
+    opacity: 1; } }
 
 .fade-enter {
   opacity: 0;

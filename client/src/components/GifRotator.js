@@ -38,6 +38,9 @@ class GifRotator extends Component {
   render() {
     return (
       <div className="gif-rotator">
+        {this.props.isPlaying && 
+          <div className="gif-rotator__bg">Gif Notes</div>
+        }
         {this.props.gifs.length > 0 && this.props.gifs.map((gif, index) => {
           return (
             <Gif

@@ -11,6 +11,7 @@ import SpotifyPlayerContainer from './SpotifyPlayerContainer';
 import PlaylistPicker from './PlaylistPicker';
 import PlayerSongInfo from './PlayerSongInfo';
 import GifRotator from './GifRotator';
+import NotPlaying from './NotPlaying';
 
 import defaultSettings from '../data/defaultSettings';
 import hamburgerIcon from '../img/hamburger.png';
@@ -34,7 +35,8 @@ class Player extends Component {
       playlistId: null, 
       gifs: [],
       gifQueryOffset: 0,
-      resetActiveGif: false
+      resetActiveGif: false,
+      isPlayInstructionsVisible: false
     };
 
     this.getCurrentTrack = this.getCurrentTrack.bind(this);
@@ -65,7 +67,7 @@ class Player extends Component {
     }, this.getCurrentTrack);
 
     // TODO: replace updating data with sockets?
-    this.songRefreshInterval = setInterval(this.getCurrentTrack, 4000);
+    this.songRefreshInterval = setInterval(this.getCurrentTrack, 2000);
   }
 
   updateToken() {
@@ -102,7 +104,8 @@ class Player extends Component {
             isPlaying: response.data.is_playing,
             playlistUri: response.data.item.uri,
             gifQueryOffset: 0,
-            resetActiveGif: true
+            resetActiveGif: true,
+            isPlayInstructionsVisible: this.state.isPlayInstructionsVisible && !response.data.is_playing
           }, () => {
             // if the player is now playing, get new gifs
             // otherwise get sad gifs
@@ -181,17 +184,23 @@ class Player extends Component {
       });
   }
 
-  getMoreGifs() {
-    const queryString = this.state.isPlaying ? this.getGifQueryString(this.state.songArtist, this.state.songTitle) : 'sad';
+  getMoreGifs(queryString) {
+    if (!queryString) {
+      queryString = this.state.isPlaying ? this.getGifQueryString(this.state.songArtist, this.state.songTitle) : 'sad';
+    }
 
     axios(`/gifs?query=${queryString}`)
       .then((response) => {
-        this.setState((prevState, props) => {
-          return {
-            gifs: prevState.gifs.concat(response.data),
-            gifQueryOffset: prevState.gifQueryOffset + response.data.length
-          }
-        })
+        if (response.data.length) {
+          this.setState((prevState, props) => {
+            return {
+              gifs: prevState.gifs.concat(response.data),
+              gifQueryOffset: prevState.gifQueryOffset + response.data.length
+            }
+          });
+        } else {
+          this.getMoreGifs(this.getGifQueryString('crazy', 'random'));
+        }
       });
   }
 
@@ -204,9 +213,14 @@ class Player extends Component {
   }
 
   updatePlaylistUri(playlistUri) {
+    let tempSettings = this.state.settings;
+    tempSettings.showPlayer = true;
+
     this.setState({
       playlistUri,
-      isPlaylistPickerOpen: false
+      isPlaylistPickerOpen: false,
+      isPlayInstructionsVisible: true,
+      settings: tempSettings
     }, () => {
       cookies.set('gn_pu', playlistUri);
     });
@@ -224,7 +238,7 @@ class Player extends Component {
     }
 
     return (
-      <div>
+      <div className="player">
         <button className="menu-button" onClick={this.toggleSettingsModal}>
           <img src={hamburgerIcon} alt="Menu" className="menu-button__icon" />
         </button>
@@ -232,6 +246,7 @@ class Player extends Component {
           songArtist={this.state.songArtist}
           songTitle={this.state.songTitle}
           showArtistSong={this.state.settings.showArtistSong}
+          isPlaying={this.state.isPlaying}
         />
         <GifRotator
           gifs={this.state.gifs}
@@ -240,6 +255,7 @@ class Player extends Component {
           gifQueryOffset={this.state.gifQueryOffset}
           resetActiveGif={this.state.resetActiveGif}
           clearResetActiveGif={this.clearResetActiveGif}
+          isPlaying={this.state.isPlaying}
         />
         {this.state.playlistUri && 
           <div className="spotify-player-wrapper">
@@ -248,8 +264,12 @@ class Player extends Component {
               toggleSpotifyPlayer={this.toggleSpotifyPlayer}
               togglePlaylistPicker={this.togglePlaylistPicker}
               showPlayer={this.state.settings.showPlayer}
+              showPlayInstructions={this.state.isPlayInstructionsVisible}
             />
           </div>
+        }
+        {this.state.isPlaying === false && !this.state.isPlaylistPickerOpen && !this.state.isSettingsModalOpen && 
+          <NotPlaying />
         }
         <img src={poweredByGiphyImg} alt="Powered by Giphy" className="player__giphy-img" />
         <div className="player__overlay"></div>
@@ -268,18 +288,21 @@ class Player extends Component {
             />
           </Modal>
         </div>
-        <Modal 
-          visible={this.state.isPlaylistPickerOpen} 
-          width="600" 
-          height="600" 
-          effect="fadeInUp" 
-          onClickAway={this.togglePlaylistPicker}
-        >
-          <PlaylistPicker
-            accessToken={this.state.accessToken}
-            updatePlaylistUri={this.updatePlaylistUri}
-          />
-        </Modal>  
+        <div className="modal-container">
+          <Modal 
+            visible={this.state.isPlaylistPickerOpen} 
+            width="600" 
+            height="600" 
+            effect="fadeInUp" 
+            onClickAway={this.togglePlaylistPicker}
+          >
+            <PlaylistPicker
+              accessToken={this.state.accessToken}
+              updatePlaylistUri={this.updatePlaylistUri}
+              closePlaylistPicker={this.togglePlaylistPicker}
+            />
+          </Modal>  
+        </div>
       </div>
     );
   }

@@ -87,3 +87,38 @@
         width: 50%;
       }
     }
+
+    .spotify-player__play-instructions {
+      position: absolute;
+      bottom: calc(100% + 10px);
+      left: 50%;
+      display: flex;
+      align-items: flex-start;
+      animation: flash linear 2s 5;
+
+      img {
+        width: 50px;
+      }
+
+      div {
+        font-family: $font-sans;
+        font-size: 1rem;
+        font-weight: bold;
+        color: white;
+        width: 130px;
+        padding-left: 5px;
+        transition: opacity 0.3s ease-in-out;
+        transform: translateY(-6px);
+      }
+    }
+
+@-webkit-keyframes flash {
+	0% { opacity: 1; } 
+	50% { opacity: .1; } 
+	100% { opacity: 1; }
+}
+@keyframes flash {
+	0% { opacity: 1; } 
+	50% { opacity: .1; } 
+	100% { opacity: 1; }
+}

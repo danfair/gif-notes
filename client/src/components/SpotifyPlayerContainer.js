@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SpotifyPlayer from 'react-spotify-player';
 import closeIcon from '../img/close.png';
+import arrowIcon from '../img/arrow.png';
 
 class SpotifyPlayerContainer extends Component {
   render() {
@@ -25,6 +26,12 @@ class SpotifyPlayerContainer extends Component {
           view="coverart"
           theme="black"
         />
+        {this.props.showPlayInstructions && 
+          <div className="spotify-player__play-instructions">
+            <img src={arrowIcon} />
+            <div>Now press play!</div>
+          </div>
+        }
       </div>
     );
   }
