@@ -85,13 +85,14 @@ class Settings extends Component {
           <div className="row--half">
             <div className="pre-label">Show Player</div>
             <div className="gn__checkbox">
-              <label>
+              <label htmlFor="show-player">
                 <input
                   type="checkbox" 
                   ref={showPlayerInput => this.showPlayerInput = showPlayerInput}
                   onChange={this.updateSettings} 
                   name="show-player"
-                  defaultChecked={this.props.settings.showPlayer}
+                  id="show-player"
+                  checked={this.props.settings.showPlayer}
                 ></input>
                 <div className="box"></div>
               </label>
@@ -100,13 +101,14 @@ class Settings extends Component {
           <div className="row--half">
             <div className="pre-label">Show Artist &amp; Song</div>
             <div className="gn__checkbox">
-              <label>
+              <label htmlFor="show-artist-song">
                 <input
                   type="checkbox" 
                   ref={showArtistSongInput => this.showArtistSongInput = showArtistSongInput}
                   onChange={this.updateSettings} 
                   name="show-artist-song"
-                  defaultChecked={this.props.settings.showArtistSong}
+                  id="show-artist-song"
+                  checked={this.props.settings.showArtistSong}
                 ></input>
                 <div className="box"></div>
               </label>

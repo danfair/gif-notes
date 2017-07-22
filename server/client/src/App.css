@@ -125,7 +125,7 @@ body {
     border-radius: 0;
     color: white;
     font-family: "Raleway", sans-serif;
-    height: 35px;
+    height: 45px;
     margin: 0;
     outline: 0;
     width: 100%;
@@ -133,7 +133,11 @@ body {
     font-size: 14px;
     font-weight: 400;
     padding: 0 50px 0 12px;
-    line-height: 35px; }
+    line-height: 45px;
+    transition: background-color 0.3 ease-in; }
+    .gn__select select:focus {
+      font-style: italic;
+      background-color: rgba(255, 255, 255, 0.1); }
 
 .gn__checkbox label {
   width: 30px;
@@ -245,10 +249,9 @@ body {
   align-items: center; }
 
 .gif-rotator__bg {
-  color: white;
-  font-size: 100px;
-  font-family: "Pacifico", cursive;
-  opacity: 0.2; }
+  opacity: 0.1; }
+  .gif-rotator__bg img {
+    max-width: 100%; }
 
 .gif-rotator__gif {
   position: absolute;
@@ -571,7 +574,8 @@ body {
   font-weight: bold;
   transition: background-color 0.3s ease-in-out; }
   .spotify-player__btn:hover {
-    background-color: #60407f; }
+    background-color: #60407f;
+    cursor: pointer; }
   .spotify-player__btn:focus, .spotify-player__btn:active {
     outline: 0;
     background-color: #7a51a1; }
@@ -587,7 +591,8 @@ body {
   border: 1px solid #60407f;
   transition: background-color 0.3s ease-in-out; }
   .spotify-player__close:hover {
-    background-color: #60407f; }
+    background-color: #60407f;
+    cursor: pointer; }
   .spotify-player__close:focus, .spotify-player__close:active {
     outline: 0;
     background-color: #7a51a1; }

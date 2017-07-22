@@ -6,7 +6,6 @@ class HeroGifBackground extends Component {
     this.getStatusClassName = this.getStatusClassName.bind(this);
   }
   getStatusClassName(index) {
-    console.log(this.props.activeGif);
     if (index === this.props.activeGif) {
       return 'active-gif';
     } else if (index === this.props.activeGif - 1) {

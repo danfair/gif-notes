@@ -28,7 +28,7 @@ class SpotifyPlayerContainer extends Component {
         />
         {this.props.showPlayInstructions && 
           <div className="spotify-player__play-instructions">
-            <img src={arrowIcon} />
+            <img src={arrowIcon} alt="" />
             <div>Now press play!</div>
           </div>
         }

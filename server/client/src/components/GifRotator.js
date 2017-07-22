@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Gif from './Gif';
+import gifNotesLogo from '../img/gn_logo_bg.png';
 
 class GifRotator extends Component {
   constructor(props) {
@@ -39,7 +40,9 @@ class GifRotator extends Component {
     return (
       <div className="gif-rotator">
         {this.props.isPlaying && 
-          <div className="gif-rotator__bg">Gif Notes</div>
+          <div className="gif-rotator__bg">
+            <img src={gifNotesLogo} alt="" />
+          </div>
         }
         {this.props.gifs.length > 0 && this.props.gifs.map((gif, index) => {
           return (

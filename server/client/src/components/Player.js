@@ -7,15 +7,13 @@ import Cookies from 'universal-cookie';
 import querystring from 'querystring';
 
 import Settings from '../components/Settings';
-import SpotifyPlayerContainer from './SpotifyPlayerContainer';
 import PlaylistPicker from './PlaylistPicker';
-import PlayerSongInfo from './PlayerSongInfo';
+import PlayerHeader from './PlayerHeader';
+import PlayerFooter from './PlayerFooter';
 import GifRotator from './GifRotator';
 import NotPlaying from './NotPlaying';
 
 import defaultSettings from '../data/defaultSettings';
-import hamburgerIcon from '../img/hamburger.png';
-import poweredByGiphyImg from '../img/giphy.png';
 const cookies = new Cookies();
 
 class Player extends Component {
@@ -24,7 +22,7 @@ class Player extends Component {
 
     this.state = {
       accessToken: cookies.get('gn_at'),
-      isPlaying: false,
+      isPlaying: null,
       refreshToken: cookies.get('gn_rt'),
       songId: null,
       songTitle: null,
@@ -79,8 +77,8 @@ class Player extends Component {
           cookies.set('gn_at', response.data.access_token);
         });
       })
-      .catch(function (error) {
-        console.log('error', error);
+      .catch(function (err) {
+        console.error('updateTokenError:', err);
       });
   }
 
@@ -121,8 +119,12 @@ class Player extends Component {
         if (err.response && err.response.data && err.response.data.error.message === 'The access token expired') {
           this.updateToken();
         } else {
+          // cookies.remove('gn_at');
+          // cookies.remove('gn_rt');
+          // cookies.remove('gn_pu');
+          // cookies.remove('gn_settings');
           // window.location.replace('/');
-          console.error(err);
+          console.error('getCurrentTrack error:', err);
         }
       });
   }
@@ -152,7 +154,7 @@ class Player extends Component {
     if (this.state.settings.searchTerms === 'both') {
       // mix it up so it's not always the same gifs
       // for same artists
-      if (Math.random() > 0.5) {
+      if (Math.random() >= 0.5) {
         gifQuery = encodeURIComponent(artists + ' ' + songTitle);
       } else {
         gifQuery = encodeURIComponent(songTitle + ' ' + artists);
@@ -181,7 +183,10 @@ class Player extends Component {
           gifs: response.data,
           gifQueryOffset: this.state.gifQueryOffset + response.data.length || response.data.length
         });
-      });
+      })
+      .catch((err) => {
+        console.err('updateGifsError:', err);
+      })
   }
 
   getMoreGifs(queryString) {
@@ -201,7 +206,10 @@ class Player extends Component {
         } else {
           this.getMoreGifs(this.getGifQueryString('crazy', 'random'));
         }
-      });
+      })
+      .catch((err) => {
+        console.error('getMoreGifs error:', err);
+      })
   }
 
   updateSettings(settings) {
@@ -239,14 +247,12 @@ class Player extends Component {
 
     return (
       <div className="player">
-        <button className="menu-button" onClick={this.toggleSettingsModal}>
-          <img src={hamburgerIcon} alt="Menu" className="menu-button__icon" />
-        </button>
-        <PlayerSongInfo
+        <PlayerHeader
           songArtist={this.state.songArtist}
           songTitle={this.state.songTitle}
           showArtistSong={this.state.settings.showArtistSong}
           isPlaying={this.state.isPlaying}
+          toggleSettingsModal={this.toggleSettingsModal}
         />
         <GifRotator
           gifs={this.state.gifs}
@@ -257,21 +263,16 @@ class Player extends Component {
           clearResetActiveGif={this.clearResetActiveGif}
           isPlaying={this.state.isPlaying}
         />
-        {this.state.playlistUri && 
-          <div className="spotify-player-wrapper">
-            <SpotifyPlayerContainer
-              playlistUri={this.state.playlistUri}
-              toggleSpotifyPlayer={this.toggleSpotifyPlayer}
-              togglePlaylistPicker={this.togglePlaylistPicker}
-              showPlayer={this.state.settings.showPlayer}
-              showPlayInstructions={this.state.isPlayInstructionsVisible}
-            />
-          </div>
-        }
         {this.state.isPlaying === false && !this.state.isPlaylistPickerOpen && !this.state.isSettingsModalOpen && 
           <NotPlaying />
         }
-        <img src={poweredByGiphyImg} alt="Powered by Giphy" className="player__giphy-img" />
+        <PlayerFooter
+          playlistUri={this.state.playlistUri}
+          toggleSpotifyPlayer={this.toggleSpotifyPlayer}
+          togglePlaylistPicker={this.togglePlaylistPicker}
+          showPlayer={this.state.settings.showPlayer}
+          showPlayInstructions={this.state.isPlayInstructionsVisible}
+        />
         <div className="player__overlay"></div>
         <div className="modal-container">
           <Modal 

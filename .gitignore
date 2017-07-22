@@ -1,14 +1,14 @@
 # See https://help.github.com/ignore-files/ for more about ignoring files.
 
 # dependencies
-/client/node_modules
+server/client/node_modules
 /server/node_modules
 
 # testing
-client/coverage
+server/client/coverage
 
 # production
-client/build
+server/client/build
 
 # misc
 .DS_Store
@@ -22,4 +22,4 @@ yarn-debug.log*
 yarn-error.log*
 
 /server/config/auth.js
-client/src/config/spotifyAuth.js
+server/client/src/config/spotifyAuth.js

@@ -12,10 +12,11 @@
 }
 
   .gif-rotator__bg {
-    color: white;
-    font-size: 100px;
-    font-family: $font-script;
-    opacity: 0.2;
+    opacity: 0.1;
+
+    img {
+      max-width: 100%;
+    }
   }
 
   .gif-rotator__gif {

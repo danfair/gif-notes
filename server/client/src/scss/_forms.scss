@@ -29,7 +29,7 @@
         border-radius: 0;
         color: white;
         font-family: $font-sans;
-        height: 35px;
+        height: 45px;
         margin: 0;
         outline: 0;
         width: 100%;
@@ -37,7 +37,13 @@
         font-size: 14px;
         font-weight: 400;
         padding: 0 50px 0 12px;
-        line-height: 35px;
+        line-height: 45px;
+        transition: background-color 0.3 ease-in;
+
+        &:focus {
+            font-style: italic;
+            background-color: rgba(255, 255, 255, 0.1);
+        }
     }
 }
 
