@@ -605,8 +605,8 @@ body {
 
 .spotify-player__play-instructions {
   position: absolute;
-  bottom: calc(100% + 10px);
-  left: 50%;
+  bottom: 100%;
+  left: 40%;
   display: flex;
   align-items: flex-start;
   animation: flash linear 2s 5; }

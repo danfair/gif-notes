@@ -3,8 +3,10 @@ import React, { Component } from 'react';
 class HeroGifBackground extends Component {
   constructor(props) {
     super(props);
+
     this.getStatusClassName = this.getStatusClassName.bind(this);
   }
+  
   getStatusClassName(index) {
     if (index === this.props.activeGif) {
       return 'active-gif';
@@ -20,7 +22,6 @@ class HeroGifBackground extends Component {
       <div className="hero__bg">
         {this.props.gifs.map((gif, index) => {
           let statusClassName = this.getStatusClassName(index);
-
           return <div key={index} className={`hero__bg-img ${statusClassName}`} style={{backgroundImage: `url(${gif.images.original.url})`}}></div>
         })}
         <div className="hero__bg-overlay"></div>

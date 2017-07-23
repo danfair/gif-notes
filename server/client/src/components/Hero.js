@@ -28,12 +28,14 @@ class Hero extends Component {
         });
       })
       .catch((err) => {
-        console.error(err);
+        console.error('hero componentDidMount error:', err);
       })
   }
+
   componentWillUnmount() {
     clearInterval(this.gifRotatorInterval);
   }
+  
   render() {
     return (
       <div className="hero">

@@ -1,15 +1,13 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class PlayerSongInfo extends Component {
-  render() {
-    const displayClassName = this.props.showArtistSong === true && this.props.isPlaying ? 'player__playing-info open' : 'player__playing-info';
-    return (
-      <div className={displayClassName}>
-        <h2>{this.props.songTitle}</h2>
-        <h1>{this.props.songArtist}</h1>
-      </div>
-    );
-  }
+const PlayerSongInfo = ({songArtist, songTitle, showArtistSong, isPlaying}) => {
+  const displayClassName = showArtistSong === true && isPlaying ? 'player__playing-info open' : 'player__playing-info';
+  return (
+    <div className={displayClassName}>
+      <h2>{songTitle}</h2>
+      <h1>{songArtist}</h1>
+    </div>
+  );
 }
 
 export default PlayerSongInfo;

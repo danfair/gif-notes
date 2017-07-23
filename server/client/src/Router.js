@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import { CSSTransitionGroup } from 'react-transition-group';
 
-import LoginPage from './components/LoginPage';
-import PlayerContainer from './components/PlayerContainer';
+import HomePage from './components/HomePage';
+import Player from './components/Player';
 
 class AppRouter extends Component {
   render() {
@@ -16,8 +16,8 @@ class AppRouter extends Component {
             transitionLeaveTimeout={300}
           >
             <Switch key={location.key} location={location}>
-              <Route exact path="/" component={LoginPage} />
-              <Route exact path="/player" component={PlayerContainer} />
+              <Route exact path="/" component={HomePage} />
+              <Route exact path="/player" component={Player} />
             </Switch>
           </CSSTransitionGroup>
         )} />

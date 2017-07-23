@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import PlaylistButton from './PlaylistButton';
 import closeIcon from '../img/close.png';
 
 class PlaylistPicker extends Component {
@@ -22,6 +23,9 @@ class PlaylistPicker extends Component {
           playlists: response.data.items
         })
       })
+      .catch((err) => {
+        console.error('playlistPicker error:', err);
+      })
   }
 
   render() {
@@ -38,13 +42,11 @@ class PlaylistPicker extends Component {
         <div className="playlists">
           {this.state.playlists.map((playlist, index) => {
             return (
-              <button 
+              <PlaylistButton
                 key={index}
-                className="playlist"
-                onClick={() => {this.props.updatePlaylistUri(playlist.uri)}}
-              >
-                  {playlist.name}
-              </button>
+                updatePlaylistUri={this.props.updatePlaylistUri}
+                playlist={playlist}
+              />
             )
           })}
         </div>

@@ -1,26 +1,24 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Gif extends Component {
+const Gif = ({activeGifIndex, gifObject, gifId}) => {
 
-  render() {
-    let iframeClassName = '';
-    let bgStyle = {};
+  let iframeClassName = '';
+  let bgStyle = {};
 
-    if (this.props.activeGifIndex === this.props.gifId) {
-      iframeClassName = 'active-gif';
-      bgStyle = {backgroundImage: `url(${this.props.gifObject.images.original.url})`};
-    } else if (this.props.activeGifIndex - 1 === this.props.gifId || this.props.activeGifIndex + 1 === this.props.gifId) {
-      iframeClassName = 'prev-gif';
-      bgStyle = {backgroundImage: `url(${this.props.gifObject.images.original.url})`};
-    }
-    
-    if (this.props.activeGifIndex <= this.props.gifId + 1) {
-      return (
-        <div style={bgStyle} className={`gif-rotator__gif gif ${iframeClassName}`}></div>
-      );
-    } else {
-      return null;
-    }
+  if (activeGifIndex === gifId) {
+    iframeClassName = 'active-gif';
+    bgStyle = {backgroundImage: `url(${gifObject.images.original.url})`};
+  } else if (activeGifIndex - 1 === gifId || activeGifIndex + 1 === gifId) {
+    iframeClassName = 'prev-gif';
+    bgStyle = {backgroundImage: `url(${gifObject.images.original.url})`};
+  }
+  
+  if (activeGifIndex <= gifId + 1) {
+    return (
+      <div style={bgStyle} className={`gif-rotator__gif gif ${iframeClassName}`}></div>
+    );
+  } else {
+    return null;
   }
 }
 

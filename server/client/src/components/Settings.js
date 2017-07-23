@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import closeIcon from '../img/close.png';
 
 class Settings extends Component {
