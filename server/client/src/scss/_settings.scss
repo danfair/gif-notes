@@ -1,34 +1,34 @@
 
 
-  .settings__form {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    
-    .row--full, .row--half {
-      width: 100%;
-      padding: 18px 0;
-    }
+.settings__form {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
 
-    .row--half {
-      @media screen and (min-width: 720px) {
-        width: calc(50% - 18px);
-      }
-    }
+	.row--full, .row--half {
+		padding: 18px 0;
+		width: 100%;
+	}
 
-    .pre-label {
-      display: block;
-      margin-bottom: 12px;
-      font-family: $font-sans;
-      font-size: 1rem;
-      font-weight: bold;
-      text-transform: uppercase;
-    }
+	.row--half {
+		@media screen and (min-width: 720px) {
+			width: calc(50% - 18px);
+		}
+	}
 
-    .settings__seconds {
-      display: block;
-      margin-bottom: 12px;
-      font-family: $font-sans;
-      font-size: 0.875rem;
-    }
-  }
+	.pre-label {
+		display: block;
+		font-family: $font-sans;
+		font-size: 1rem;
+		font-weight: bold;
+		margin-bottom: 12px;
+		text-transform: uppercase;
+	}
+
+	.settings__seconds {
+		display: block;
+		font-family: $font-sans;
+		font-size: 0.875rem;
+		margin-bottom: 12px;
+	}
+}

@@ -17,7 +17,7 @@ class AppRouter extends Component {
           >
             <Switch key={location.key} location={location}>
               <Route exact path="/" component={HomePage} />
-              <Route exact path="/player" component={Player} />
+              <Route path="/player" component={Player} />
             </Switch>
           </CSSTransitionGroup>
         )} />

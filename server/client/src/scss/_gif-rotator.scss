@@ -1,43 +1,43 @@
-@import './variables.scss';
+@import "./variables.scss";
 
 .gif-rotator {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+	align-items: center;
+	display: flex;
+	height: 100%;
+	justify-content: center;
+	left: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
 }
 
-  .gif-rotator__bg {
-    opacity: 0.1;
+.gif-rotator__bg {
+	opacity: 0.1;
 
-    img {
-      max-width: 100%;
-    }
-  }
+	img {
+		max-width: 100%;
+	}
+}
 
-  .gif-rotator__gif {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-  }
+.gif-rotator__gif {
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	height: 100%;
+	left: 0;
+	opacity: 0;
+	position: absolute;
+	top: 0;
+	width: 100%;
+}
 
-    .gif-rotator__gif.active-gif {
-      opacity: 1;
-      z-index: 1;
-    }
+.gif-rotator__gif.active-gif {
+	opacity: 1;
+	z-index: 1;
+}
 
-    .gif-rotator__gif.prev-gif {
-      opacity: 0;
-      z-index: 2;
-      transition: opacity 0.7s ease-in-out;
-    }
+.gif-rotator__gif.prev-gif {
+	opacity: 0;
+	transition: opacity 0.7s ease-in-out;
+	z-index: 2;
+}

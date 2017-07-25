@@ -7,10 +7,10 @@ const Gif = ({activeGifIndex, gifObject, gifId}) => {
 
   if (activeGifIndex === gifId) {
     iframeClassName = 'active-gif';
-    bgStyle = {backgroundImage: `url(${gifObject.images.original.url})`};
+    bgStyle = {backgroundImage: `url(${gifObject.images.downsized_medium.url})`};
   } else if (activeGifIndex - 1 === gifId || activeGifIndex + 1 === gifId) {
     iframeClassName = 'prev-gif';
-    bgStyle = {backgroundImage: `url(${gifObject.images.original.url})`};
+    bgStyle = {backgroundImage: `url(${gifObject.images.downsized_medium.url})`};
   }
   
   if (activeGifIndex <= gifId + 1) {

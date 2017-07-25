@@ -1,0 +1,18 @@
+.share-shelf {
+	align-items: center;
+	display: flex;
+	justify-content: flex-start;
+	padding: 24px 0;
+
+	@media screen and (min-width: 720px) {
+		justify-content: center;
+	}
+	a {
+		margin: 0 8px;
+		padding: 8px;
+
+		img {
+			height: 24px;
+		}
+	}
+}

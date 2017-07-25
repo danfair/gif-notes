@@ -22,30 +22,32 @@ class Player extends Component {
 
     this.state = {
       accessToken: cookies.get('gn_at'),
-      isPlaying: null,
-      refreshToken: cookies.get('gn_rt'),
-      songId: null,
-      songTitle: null,
-      songArtist: null,
-      isSettingsModalOpen: false,
-      settings: {},
-      isPlaylistPickerOpen: false,
-      playlistId: null, 
       gifs: [],
       gifQueryOffset: 0,
+      isMouseMovingAround: false,
+      isPlayInstructionsVisible: false,
+      isPlaying: null,
+      isPlaylistPickerOpen: false,
+      isSettingsModalOpen: false,
+      playlistId: null, 
+      refreshToken: cookies.get('gn_rt'),
       resetActiveGif: false,
-      isPlayInstructionsVisible: false
+      settings: {},
+      songId: null,
+      songTitle: null,
+      songArtist: null
     };
 
-    this.getCurrentTrack = this.getCurrentTrack.bind(this);
-    this.updateToken = this.updateToken.bind(this);
-    this.toggleSettingsModal = this.toggleSettingsModal.bind(this);
-    this.togglePlaylistPicker = this.togglePlaylistPicker.bind(this);
-    this.updateSettings = this.updateSettings.bind(this);
-    this.updatePlaylistUri = this.updatePlaylistUri.bind(this);
-    this.getMoreGifs = this.getMoreGifs.bind(this);
     this.clearResetActiveGif = this.clearResetActiveGif.bind(this);
+    this.getCurrentTrack = this.getCurrentTrack.bind(this);
+    this.getMoreGifs = this.getMoreGifs.bind(this);
+    this.toggleSettingsModal = this.toggleSettingsModal.bind(this);
     this.toggleSpotifyPlayer = this.toggleSpotifyPlayer.bind(this);
+    this.togglePlaylistPicker = this.togglePlaylistPicker.bind(this);
+    this.updateMouseMovement = this.updateMouseMovement.bind(this);
+    this.updatePlaylistUri = this.updatePlaylistUri.bind(this);
+    this.updateSettings = this.updateSettings.bind(this);
+    this.updateToken = this.updateToken.bind(this);
   }
 
   componentDidMount() {
@@ -66,6 +68,21 @@ class Player extends Component {
 
     // TODO: replace updating data with sockets?
     this.songRefreshInterval = setInterval(this.getCurrentTrack, 2000);
+
+    document.addEventListener('mousemove', this.updateMouseMovement, false);
+  }
+
+  updateMouseMovement() {
+    this.setState({
+      isMouseMovingAround: true
+    }, () => {
+      clearTimeout(this.mouseMovementTimeout);
+      this.mouseMovementTimeout = setTimeout(() => {
+        this.setState({
+          isMouseMovingAround: false
+        });
+      }, 4000);
+    });
   }
 
   updateToken() {
@@ -155,9 +172,9 @@ class Player extends Component {
       // mix it up so it's not always the same gifs
       // for same artists
       if (Math.random() >= 0.5) {
-        gifQuery = encodeURIComponent(artists + ' ' + songTitle);
+        gifQuery = encodeURIComponent(`${artists} ${songTitle}`);
       } else {
-        gifQuery = encodeURIComponent(songTitle + ' ' + artists);
+        gifQuery = encodeURIComponent(`${songTitle} ${artists}`);
       }
     } else if (this.state.settings.searchTerms === 'artist') {
       gifQuery = encodeURIComponent(artists);
@@ -253,6 +270,7 @@ class Player extends Component {
           showArtistSong={this.state.settings.showArtistSong}
           isPlaying={this.state.isPlaying}
           toggleSettingsModal={this.toggleSettingsModal}
+          isMouseMovingAround={this.state.isMouseMovingAround}
         />
         <GifRotator
           gifs={this.state.gifs}
@@ -272,6 +290,7 @@ class Player extends Component {
           togglePlaylistPicker={this.togglePlaylistPicker}
           showPlayer={this.state.settings.showPlayer}
           showPlayInstructions={this.state.isPlayInstructionsVisible}
+          isMouseMovingAround={this.state.isMouseMovingAround}
         />
         <div className="player__overlay"></div>
         <div className="modal-container">

@@ -1,126 +1,151 @@
-@import './_variables';
+@import "./_variables";
+
+.spotify-player-wrapper {
+	.spotify-player__btn-shelf {
+		opacity: 0;
+		transition: all 0.2s ease-in;
+	}
+
+	&.faded-in {
+		.spotify-player__btn-shelf {
+			opacity: 1;
+		}
+	}
+}
 
 .spotify-player {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  z-index: 10;
-  transform: translateY(100%);
-  transition: transform 0.3s ease-in-out;
+	bottom: 0;
+	left: 0;
+	position: absolute;
+	transform: translateY(100%);
+	transition: transform 0.3s ease-in-out;
+	z-index: 10;
 
-  &.open {
-    transform: translateY(0);
+	&.open {
+		transform: translateY(0);
 
-    iframe {
-      opacity: 1;
-      height: 80px;
-      max-height: 80px;
-    }
-  }
+		iframe {
+			height: 80px;
+			max-height: 80px;
+			opacity: 1;
+		}
+	}
 
-  iframe {
-    vertical-align: bottom;
-    display: block;
-    opacity: 0;
-    height: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: all 0.3s ease-in-out;
-  }
+	iframe {
+		display: block;
+		height: 0;
+		max-height: 0;
+		opacity: 0;
+		overflow: hidden;
+		transition: all 0.3s ease-in-out;
+		vertical-align: bottom;
+	}
 }
 
-  .spotify-player__btn-shelf {
-    position: absolute;
-    bottom: 100%;
-    left: 0;
-    width: 100%;
-    padding: 0 6px;
-  }
+.spotify-player__btn-shelf {
+	bottom: 100%;
+	left: 0;
+	padding: 0 6px;
+	position: absolute;
+	width: 100%;
+}
 
-    .spotify-player__btn {
-      background-color: rgba($color-purple, 0.8);
-      color: white;
-      font-family: $font-sans;
-      text-transform: uppercase;
-      border-radius: 5px 5px 0 0;
-      border: 0;
-      margin: 0 6px;
-      padding: 6px 9px;
-      font-weight: bold;
-      transition: background-color 0.3s ease-in-out;
+.spotify-player__btn {
+	background-color: rgba($color-purple, 0.8);
+	border: 0;
+	border-radius: 5px 5px 0 0;
+	color: white;
+	font-family: $font-sans;
+	font-weight: bold;
+	margin: 0 6px;
+	padding: 6px 9px;
+	text-transform: uppercase;
+	transition: background-color 0.3s ease-in-out;
 
-      &:hover {
-        background-color: $color-purple;
-        cursor: pointer;
-      }
+	&:hover {
+		background-color: $color-purple;
+		cursor: pointer;
+	}
 
-      &:focus, &:active {
-        outline: 0;
-        background-color: lighten($color-purple, 10%);
-      }
-    }
+	&:focus, &:active {
+		background-color: lighten($color-purple, 10%);
+		outline: 0;
+	}
+}
 
-    .spotify-player__close {
-      position: absolute;
-      right: -11px;
-      bottom: -11px;
-      height: 22px;
-      width: 22px;
-      border-radius: 50%;
-      background-color: rgba($color-purple, 0.85);
-      border: 1px solid $color-purple;
-      transition: background-color 0.3s ease-in-out;
+.spotify-player__close {
+	background-color: rgba($color-purple, 0.85);
+	border: 1px solid $color-purple;
+	border-radius: 50%;
+	bottom: -11px;
+	height: 22px;
+	position: absolute;
+	right: -11px;
+	transition: background-color 0.3s ease-in-out;
+	width: 22px;
 
-      &:hover {
-        background-color: $color-purple;
-        cursor: pointer;
-      }
+	&:hover {
+		background-color: $color-purple;
+		cursor: pointer;
+	}
 
-      &:focus, &:active {
-        outline: 0;
-        background-color: lighten($color-purple, 10%);
-      }
+	&:focus, &:active {
+		background-color: lighten($color-purple, 10%);
+		outline: 0;
+	}
 
-      img {
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 50%;
-      }
-    }
+	img {
+		left: 50%;
+		position: absolute;
+		top: 50%;
+		transform: translate(-50%, -50%);
+		width: 50%;
+	}
+}
 
-    .spotify-player__play-instructions {
-      position: absolute;
-      bottom: 100%;
-      left: 40%;
-      display: flex;
-      align-items: flex-start;
-      animation: flash linear 2s 5;
+.spotify-player__play-instructions {
+	align-items: flex-start;
+	animation: flash linear 2s 5;
+	bottom: 100%;
+	display: flex;
+	left: 40%;
+	position: absolute;
 
-      img {
-        width: 50px;
-      }
+	img {
+		width: 50px;
+	}
 
-      div {
-        font-family: $font-sans;
-        font-size: 1rem;
-        font-weight: bold;
-        color: white;
-        width: 130px;
-        padding-left: 5px;
-        transition: opacity 0.3s ease-in-out;
-        transform: translateY(-6px);
-      }
-    }
+	div {
+		color: white;
+		font-family: $font-sans;
+		font-size: 1rem;
+		font-weight: bold;
+		padding-left: 5px;
+		transform: translateY(-6px);
+		transition: opacity 0.3s ease-in-out;
+		width: 130px;
+	}
+}
 
 @-webkit-keyframes flash {
-	0% { opacity: 1; } 
-	50% { opacity: .1; } 
-	100% { opacity: 1; }
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.1;
+	}
+	100% {
+		opacity: 1;
+	}
 }
 @keyframes flash {
-	0% { opacity: 1; } 
-	50% { opacity: .1; } 
-	100% { opacity: 1; }
+	0% {
+		opacity: 1;
+	}
+	50% {
+		opacity: 0.1;
+	}
+	100% {
+		opacity: 1;
+	}
 }

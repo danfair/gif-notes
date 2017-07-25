@@ -1,28 +1,28 @@
 .playlists {
-  display: flex;
-  flex-wrap: wrap;
-  max-height: 400px;
-  overflow-y: scroll;
+	display: flex;
+	flex-wrap: wrap;
+	max-height: 400px;
+	overflow-y: scroll;
 }
 
-  .playlist {
-    width: 100%;
-    padding: 1rem;
-    appearance: none;
-    background-color: transparent;
-    border: 0;
-    color: white;
-    font-family: $font-sans;
-    font-size: 1rem;
-    transition: background-color 0.3s ease-in;
-    text-align: left;
+.playlist {
+	appearance: none;
+	background-color: transparent;
+	border: 0;
+	color: white;
+	font-family: $font-sans;
+	font-size: 1rem;
+	padding: 1rem;
+	text-align: left;
+	transition: background-color 0.3s ease-in;
+	width: 100%;
 
-    &:hover, &:active {
-      background-color: rgba(255, 255, 255, 0.1);
-      cursor: pointer;
-    }
+	&:hover, &:active {
+		background-color: rgba(255, 255, 255, 0.1);
+		cursor: pointer;
+	}
 
-    @media screen and (min-width: 720px) {
-      width: 50%;
-    }
-  }
+	@media screen and (min-width: 720px) {
+		width: 50%;
+	}
+}

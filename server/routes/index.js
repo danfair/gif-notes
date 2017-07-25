@@ -4,6 +4,7 @@ const cors = require('cors');
 const https = require('https');
 const querystring = require('querystring');
 const needle = require('needle');
+const path = require('path');
 
 const auth = require('../config/auth');
 const Spotify = require('spotify-web-api-node');
@@ -64,7 +65,7 @@ router.get('/callback', (req, res) => {
   const storedState = req.cookies ? req.cookies[STATE_KEY] : null;
   // first do state validation
   if (state === null || state !== storedState) {
-    res.redirect('http://localhost:3000/#/error/state mismatch');
+    res.redirect('/error-state-mismatch');
   // if the state is valid, get the authorization code and pass it on to the client
   } else {
     res.clearCookie(STATE_KEY);
@@ -83,17 +84,15 @@ router.get('/callback', (req, res) => {
 
       res.cookie('gn_at', access_token);
       res.cookie('gn_rt', refresh_token);
-      // we can also pass the token to the browser to make requests from there
-      // res.redirect(`http://localhost:3000/#/user/${access_token}/${refresh_token}`);
-      res.redirect('http://localhost:3000/player');
+      res.redirect('/player');
     }).catch(err => {
-      res.redirect('http://localhost:3000/#/error/invalid token');
+      res.redirect('/#/error/invalid token');
     });
   }
 });
 
 router.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname+'/client/build/index.html'));
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });
 
 module.exports = router;

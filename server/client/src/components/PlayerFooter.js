@@ -2,11 +2,14 @@ import React from 'react';
 import SpotifyPlayerContainer from './SpotifyPlayerContainer';
 import poweredByGiphyImg from '../img/giphy.png';
 
-const PlayerFooter = ({playlistUri, toggleSpotifyPlayer, togglePlaylistPicker, showPlayer, showPlayInstructions}) => {
+const PlayerFooter = ({playlistUri, toggleSpotifyPlayer, togglePlaylistPicker, showPlayer, showPlayInstructions, isMouseMovingAround}) => {
+
+  const wrapperClass = !isMouseMovingAround && !showPlayer ? 'spotify-player-wrapper' : 'spotify-player-wrapper faded-in';
+
   return (
     <div>
       {playlistUri && 
-        <div className="spotify-player-wrapper">
+        <div className={wrapperClass}>
           <SpotifyPlayerContainer
             playlistUri={playlistUri}
             toggleSpotifyPlayer={toggleSpotifyPlayer}

@@ -1,9 +1,9 @@
-@import './variables.scss';
+@import "./variables.scss";
 
 .site-footer {
-  background-color: $color-light-gray;
-  padding: 24px 0;
-  font-family: $font-sans;
-  font-size: 1em;
-  text-align: center;
+	background-color: $color-light-gray;
+	font-family: $font-sans;
+	font-size: 1em;
+	padding: 24px 0;
+	text-align: center;
 }
