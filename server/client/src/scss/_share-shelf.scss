@@ -11,6 +11,11 @@
 		margin: 0 8px;
 		padding: 8px;
 
+		&:first-child {
+			margin-left: 0;
+			padding-left: 0;
+		}
+
 		img {
 			height: 24px;
 		}

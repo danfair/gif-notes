@@ -2,6 +2,9 @@ import React, { Component } from 'react';
 import closeIcon from '../img/close.png';
 import twIcon from '../img/tw.png';
 import fbIcon from '../img/fb.png';
+import spotifyIcon from '../img/spotify.png';
+import Cookies from 'universal-cookie';
+const cookies = new Cookies();
 
 class Settings extends Component {
 
@@ -9,6 +12,7 @@ class Settings extends Component {
     super(props);
 
     this.updateSettings = this.updateSettings.bind(this);
+    this.logout = this.logout.bind(this);
   }
 
   updateSettings() {
@@ -21,6 +25,14 @@ class Settings extends Component {
     };
 
     this.props.updateSettings(newSettings);
+  }
+
+  logout() {
+    cookies.remove('gn_at');
+    cookies.remove('gn_rt');
+    cookies.remove('gn_pu');
+    cookies.remove('gn_settings');
+    window.location.replace('/');
   }
 
   render() {
@@ -116,13 +128,19 @@ class Settings extends Component {
             </div>
           </div>
         </form>
-        <div className="share-shelf">
-          <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A//gifnotes.net" target="_blank" rel="noopener noreferrer">
-            <img src={fbIcon} alt="Share on Facebook" />
-          </a>
-          <a href="https://twitter.com/home?status=Visualize%20your%20music%20listening%20experience%20with%20Gif%20Notes%20%23gifnotes%20http%3A//www.gifnotes.net" target="_blank" rel="noopener noreferrer">
-            <img src={twIcon} alt="Share on Twitter" />
-          </a>
+        <div className="settings-footer">
+          <div className="share-shelf">
+            <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A//gifnotes.net" target="_blank" rel="noopener noreferrer">
+              <img src={fbIcon} alt="Share on Facebook" />
+            </a>
+            <a href="https://twitter.com/home?status=Visualize%20your%20music%20listening%20experience%20with%20Gif%20Notes%20%23gifnotes%20http%3A//www.gifnotes.net" target="_blank" rel="noopener noreferrer">
+              <img src={twIcon} alt="Share on Twitter" />
+            </a>
+          </div>
+          <button onClick={this.logout} className="btn btn--green">
+            <img src={spotifyIcon} alt="Spotify logo" className="btn__icon" />
+            <span>Logout</span>
+          </button>
         </div>
       </div>
     );

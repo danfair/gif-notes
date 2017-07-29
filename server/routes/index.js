@@ -13,13 +13,13 @@ const spotifyScopes = ['user-read-private', 'user-read-email', 'user-read-playba
 const spotifyApi = new Spotify({
   clientId: auth.CLIENT_ID,
   clientSecret: auth.CLIENT_SECRET,
-  redirectUri: auth.REDIRECT_URI
+  redirectUri: process.env.MODE === 'development' ? auth.REDIRECT_URI_DEVELOPMENT : auth.REDIRECT_URI
 });
 
 /** Generates a random string containing numbers and letters of N characters */
 const generateRandomString = N => (Math.random().toString(36)+Array(N).join('0')).slice(2, N+2);
 
-router.get('/login', (_, res) => {
+router.get('/login', (req, res) => {
   const state = generateRandomString(16);
   res.cookie(STATE_KEY, state);
   res.redirect(spotifyApi.createAuthorizeURL(spotifyScopes, state));

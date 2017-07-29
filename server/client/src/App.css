@@ -27,6 +27,7 @@ body {
 .btn {
   align-items: center;
   appearance: none;
+  border: 0;
   display: flex;
   font-family: "Raleway", sans-serif;
   font-size: 0.75em;
@@ -542,6 +543,11 @@ body {
     font-size: 0.875rem;
     margin-bottom: 12px; }
 
+.settings-footer {
+  align-items: center;
+  display: flex;
+  justify-content: space-between; }
+
 .share-shelf {
   align-items: center;
   display: flex;
@@ -553,6 +559,9 @@ body {
   .share-shelf a {
     margin: 0 8px;
     padding: 8px; }
+    .share-shelf a:first-child {
+      margin-left: 0;
+      padding-left: 0; }
     .share-shelf a img {
       height: 24px; }
 
@@ -670,22 +679,18 @@ body {
 
 .fade-enter {
   opacity: 0;
-  transform: translate(50px, 0);
   z-index: 1; }
 
 .fade-enter.fade-enter-active {
   opacity: 1;
-  transform: translate(0, 0);
-  transition: opacity 250ms ease-in, transform 250ms ease-in; }
+  transition: opacity 250ms ease-in; }
 
 .fade-leave {
   left: 0;
   opacity: 1;
   position: absolute;
-  top: 0;
-  transform: translate(0, 0); }
+  top: 0; }
 
 .fade-leave.fade-leave-active {
   opacity: 0;
-  transform: translate(-50px, 0);
-  transition: opacity 250ms ease-in, transform 250ms ease-in; }
+  transition: opacity 250ms ease-in; }

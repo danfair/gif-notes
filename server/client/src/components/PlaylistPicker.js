@@ -10,9 +10,15 @@ class PlaylistPicker extends Component {
     this.state = {
       playlists: []
     };
+
+    this.getPlaylists = this.getPlaylists.bind(this);
   }
 
   componentDidMount() {
+    this.getPlaylists();
+  }
+
+  getPlaylists() {
     axios('https://api.spotify.com/v1/me/playlists/?limit=50', {
       headers: {
         'Authorization': `Bearer ${this.props.accessToken}`
@@ -25,6 +31,8 @@ class PlaylistPicker extends Component {
       })
       .catch((err) => {
         console.error('playlistPicker error:', err);
+        this.props.updateToken();
+        this.getPlaylists();
       })
   }
 

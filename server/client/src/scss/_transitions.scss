@@ -1,13 +1,11 @@
 .fade-enter {
 	opacity: 0;
-	transform: translate(50px, 0);
 	z-index: 1;
 }
 
 .fade-enter.fade-enter-active {
 	opacity: 1;
-	transform: translate(0, 0);
-	transition: opacity 250ms ease-in, transform 250ms ease-in;
+	transition: opacity 250ms ease-in;
 }
 
 .fade-leave {
@@ -15,11 +13,9 @@
 	opacity: 1;
 	position: absolute;
 	top: 0;
-	transform: translate(0, 0);
 }
 
 .fade-leave.fade-leave-active {
 	opacity: 0;
-	transform: translate(-50px, 0);
-	transition: opacity 250ms ease-in, transform 250ms ease-in;
+	transition: opacity 250ms ease-in;
 }

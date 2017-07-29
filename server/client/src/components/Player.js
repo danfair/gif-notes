@@ -202,7 +202,7 @@ class Player extends Component {
         });
       })
       .catch((err) => {
-        console.err('updateGifsError:', err);
+        console.error('updateGifsError:', err);
       })
   }
 
@@ -248,6 +248,11 @@ class Player extends Component {
       settings: tempSettings
     }, () => {
       cookies.set('gn_pu', playlistUri);
+      setTimeout(() => {
+        this.setState({
+          isPlayInstructionsVisible: false
+        })
+      }, 5000);
     });
   }
 
@@ -320,6 +325,7 @@ class Player extends Component {
               accessToken={this.state.accessToken}
               updatePlaylistUri={this.updatePlaylistUri}
               closePlaylistPicker={this.togglePlaylistPicker}
+              updateToken={this.updateToken}
             />
           </Modal>  
         </div>
