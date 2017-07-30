@@ -65,7 +65,7 @@ router.get('/callback', (req, res) => {
   const storedState = req.cookies ? req.cookies[STATE_KEY] : null;
   // first do state validation
   if (state === null || state !== storedState) {
-    res.redirect('/error-state-mismatch');
+    res.redirect('/fail=true');
   // if the state is valid, get the authorization code and pass it on to the client
   } else {
     res.clearCookie(STATE_KEY);
@@ -86,7 +86,7 @@ router.get('/callback', (req, res) => {
       res.cookie('gn_rt', refresh_token);
       res.redirect('/player');
     }).catch(err => {
-      res.redirect('/#/error/invalid token');
+      res.redirect('/');
     });
   }
 });

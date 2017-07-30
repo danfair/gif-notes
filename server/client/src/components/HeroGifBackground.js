@@ -22,7 +22,11 @@ class HeroGifBackground extends Component {
       <div className="hero__bg">
         {this.props.gifs.map((gif, index) => {
           let statusClassName = this.getStatusClassName(index);
-          return <div key={index} className={`hero__bg-img ${statusClassName}`} style={{backgroundImage: `url(${gif.images.original.url})`}}></div>
+          return <div 
+                  key={index} 
+                  className={`hero__bg-img ${statusClassName}`} 
+                  style={statusClassName === 'active-gif' || statusClassName === 'prev-gif' ? {backgroundImage: `url(${gif.images.original.url})`} : {}}>
+                </div>
         })}
         <div className="hero__bg-overlay"></div>
       </div>
