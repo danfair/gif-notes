@@ -4,7 +4,6 @@ import { CSSTransitionGroup } from 'react-transition-group';
 
 import HomePage from './components/HomePage';
 import Player from './components/Player';
-import NoMatch from './components/NoMatch';
 
 class AppRouter extends Component {
   render() {
@@ -19,7 +18,6 @@ class AppRouter extends Component {
             <Switch key={location.key} location={location}>
               <Route exact path="/" component={HomePage} />
               <Route path="/player" component={Player} />
-              <Route component={NoMatch}/>
             </Switch>
           </CSSTransitionGroup>
         )} />

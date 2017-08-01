@@ -91,8 +91,16 @@ router.get('/callback', (req, res) => {
   }
 });
 
-router.get('*', (req, res) => {
+router.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
+
+router.get('/player', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'));
+});
+
+router.get('*', (req, res) => {
+  res.redirect('/?fail=true');
 });
 
 module.exports = router;
