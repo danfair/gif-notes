@@ -3,7 +3,7 @@ import NavHeader from './NavHeader';
 import axios from 'axios';
 import queryString from 'query-string';
 import HeroGifBackground from './HeroGifBackground';
-
+import starterGif from '../data/starterGif';
 
 
 class Hero extends Component {
@@ -11,7 +11,7 @@ class Hero extends Component {
     super(props);
     
     this.state = {
-      gifs: [],
+      gifs: [starterGif],
       activeGif: 0,
       isFourOhFour: false
     }
@@ -24,13 +24,13 @@ class Hero extends Component {
       });
     }
 
-    const searchTerm = queryParams.fail ? 'fail' : 'music dance';
+    const searchTerm = queryParams.fail ? 'fail' : 'fun music';
     const homePageGifQueryString = encodeURIComponent(searchTerm);
     
     axios(`/gifs?query=${homePageGifQueryString}`)
       .then((response) => {
         this.setState({
-          gifs: response.data
+          gifs: this.state.gifs.concat(response.data)
         }, () => {
           this.gifRotatorInterval = setInterval(() => {
             this.setState({

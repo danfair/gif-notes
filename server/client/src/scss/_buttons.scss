@@ -12,19 +12,19 @@
 	padding: 6px 12px;
 	text-decoration: none;
 	text-transform: uppercase;
-}
-
-.btn--green {
-	background-color: $color-green;
-	color: white;
-	transition: background-color 0.3s ease-in-out;
-
-	&:hover {
-		background-color: darken($color-green, 10%);
 	}
-}
 
-.btn__icon {
-	margin-right: 9px;
-	width: 24px;
-}
+	.btn--green {
+		background-color: $color-green;
+		color: white;
+		transition: background-color 0.3s ease-in-out;
+
+		&:hover {
+			background-color: darken($color-green, 10%);
+			}
+		}
+
+	.btn__icon {
+		margin-right: 9px;
+		width: 24px;
+	}

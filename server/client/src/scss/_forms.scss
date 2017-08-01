@@ -110,51 +110,49 @@
 	-webkit-tap-highlight-color: rgba(255, 255, 255, 0);
 }
 
-.gn__input-range::-moz-range-track {
-	background: transparent;
-	border: inherit;
-}
+	.gn__input-range::-moz-range-track {
+		background: transparent;
+		border: inherit;
+	}
 
-.gn__input-range::-ms-track {
-	background: transparent;
-	border: inherit;
-	color: transparent; /* don't drawn vertical reference line */
-}
+	.gn__input-range::-ms-track {
+		background: transparent;
+		border: inherit;
+		color: transparent; /* don't drawn vertical reference line */
+	}
 
-.gn__input-range::-ms-fill-lower,
-.gn__input-range::-ms-fill-upper {
-	background: transparent;
-}
+	.gn__input-range::-ms-fill-lower,
+	.gn__input-range::-ms-fill-upper {
+		background: transparent;
+	}
 
-.gn__input-range::-ms-tooltip {
-	display: none;
-}
+	.gn__input-range::-ms-tooltip {
+		display: none;
+	}
 
-/* thumb */
+	.gn__input-range::-webkit-slider-thumb {
+		-webkit-appearance: none;
+		background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, lighten($color-purple, 15%)), color-stop(100%, $color-purple)); /* android <= 2.2 */
+		background-image: -webkit-linear-gradient(top , lighten($color-purple, 15%) 0, $color-purple 100%); /* older mobile safari and android > 2.2 */
+		background-image: linear-gradient(to bottom, lighten($color-purple, 15%) 0, $color-purple 100%); /* W3C */
+		border: none;
+		border-radius: 12px;
+		height: 18px;
+		width: 40px;;
+	}
 
-.gn__input-range::-webkit-slider-thumb {
-	-webkit-appearance: none;
-	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, lighten($color-purple, 15%)), color-stop(100%, $color-purple)); /* android <= 2.2 */
-	background-image: -webkit-linear-gradient(top , lighten($color-purple, 15%) 0, $color-purple 100%); /* older mobile safari and android > 2.2 */
-	background-image: linear-gradient(to bottom, lighten($color-purple, 15%) 0, $color-purple 100%); /* W3C */
-	border: none;
-	border-radius: 12px;
-	height: 18px;
-	width: 40px;;
-}
+	.gn__input-range::-moz-range-thumb {
+		background-image: linear-gradient(to bottom, lighten($color-purple, 15%) 0, $color-purple 100%); /* W3C */
+		border: none;
+		border-radius: 12px;
+		height: 18px;
+		width: 40px;
+	}
 
-.gn__input-range::-moz-range-thumb {
-	background-image: linear-gradient(to bottom, lighten($color-purple, 15%) 0, $color-purple 100%); /* W3C */
-	border: none;
-	border-radius: 12px;
-	height: 18px;
-	width: 40px;
-}
-
-.gn__input-range::-ms-thumb {
-	background-image: linear-gradient(to bottom, lighten($color-purple, 15%) 0, $color-purple 100%); /* W3C */
-	border: 0;
-	border-radius: 12px;
-	height: 18px;
-	width: 40px;
-}
+	.gn__input-range::-ms-thumb {
+		background-image: linear-gradient(to bottom, lighten($color-purple, 15%) 0, $color-purple 100%); /* W3C */
+		border: 0;
+		border-radius: 12px;
+		height: 18px;
+		width: 40px;
+	}

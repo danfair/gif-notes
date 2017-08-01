@@ -26,10 +26,6 @@ class Login extends Component {
   }
 
   render() {
-    // if (this.state.accessToken && this.state.refreshToken) {
-    //   return <Redirect push to="/player" />
-    // }
-
     return (
       <div className="login-page">
         <Hero
