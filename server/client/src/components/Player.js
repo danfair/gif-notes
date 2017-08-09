@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
+import PropTypes from 'prop-types';
 
 import axios from 'axios';
 import Modal from 'react-awesome-modal';

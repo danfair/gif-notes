@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import PropTypes from 'prop-types';
+
 import PlaylistButton from './PlaylistButton';
 import closeIcon from '../img/close.png';
 

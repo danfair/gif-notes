@@ -1,25 +1,31 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-const Gif = ({activeGifIndex, gifObject, gifId}) => {
-
-  let iframeClassName = '';
+const Gif = ({ activeGifIndex, gifObject, gifId }) => {
+  let gifClassName = '';
   let bgStyle = {};
 
   if (activeGifIndex === gifId) {
-    iframeClassName = 'active-gif';
-    bgStyle = {backgroundImage: `url(${gifObject.images.downsized_medium.url})`};
+    gifClassName = 'active-gif';
+    bgStyle = { backgroundImage: `url(${gifObject.images.downsized_medium.url})` };
   } else if (activeGifIndex - 1 === gifId || activeGifIndex + 1 === gifId) {
-    iframeClassName = 'prev-gif';
-    bgStyle = {backgroundImage: `url(${gifObject.images.downsized_medium.url})`};
+    gifClassName = 'prev-gif';
+    bgStyle = { backgroundImage: `url(${gifObject.images.downsized_medium.url})` };
   }
-  
+
   if (activeGifIndex <= gifId + 1) {
     return (
-      <div style={bgStyle} className={`gif-rotator__gif gif ${iframeClassName}`}></div>
+      <div style={bgStyle} className={`gif-rotator__gif gif ${gifClassName}`} />
     );
-  } else {
-    return null;
   }
-}
+
+  return null;
+};
+
+Gif.propTypes = {
+  activeGifIndex: PropTypes.number.isRequired,
+  gifObject: PropTypes.object.isRequired,  // eslint-disable-line react/forbid-prop-types
+  gifId: PropTypes.number.isRequired,
+};
 
 export default Gif;

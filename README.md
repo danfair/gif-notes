@@ -10,6 +10,22 @@ Visualize your music listening experience with related GIFs!
 
 This project is built with React on the front end, and Node/Express on the back end. 
 
+### Auth file
+
+Register your app with Spotify and Giphy to get the necessary tokens.
+
+In `server/config` add an `auth.js` file:
+
+```
+module.exports = {
+  CLIENT_ID: 'XXXXXXXXXXXXXXXX',
+  CLIENT_SECRET: 'XXXXXXXXXXXXXXXX',
+  REDIRECT_URI: 'http://www.gifnotes.net/callback',
+  REDIRECT_URI_DEVELOPMENT: 'http://localhost:3001/callback',
+  GIPHY_API_KEY: 'XXXXXXXXXXXXXXXX'
+}
+```
+
 ### Node/Express
 
 To start the server from the project root:
@@ -22,7 +38,7 @@ This will start the server on port 3001 and set the environment variable `MODE` 
 
 ### React
 
-To start the React development server from the project root: 
+To start the React development server from the project root:
 
 `cd server/client`
 

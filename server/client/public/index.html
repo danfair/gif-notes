@@ -58,6 +58,13 @@
       ga('create', 'UA-54664907-2', 'auto');
       ga('send', 'pageview');
 
+      var links = document.querySelectorAll('a');
+      for (var i = 0; i < links.length; i++) {
+        links[i].addEventListener('click', function (e) {
+          ga('send', 'event', 'Clicks', 'Site Click', e.target.text + ' (' + e.target.href + ') ');
+        });
+      }
+
     </script>
   </body>
 </html>

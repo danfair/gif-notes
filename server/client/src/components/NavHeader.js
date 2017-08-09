@@ -1,6 +1,8 @@
 import React from 'react';
-import spotifyIcon from '../img/spotify.png';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
+
+import spotifyIcon from '../img/spotify.png';
 
 const NavHeader = ({accessToken}) => {
   return (

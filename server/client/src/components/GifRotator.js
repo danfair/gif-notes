@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import Gif from './Gif';
 import gifNotesLogo from '../img/gn_logo_bg.png';
 
@@ -7,18 +8,17 @@ class GifRotator extends Component {
     super(props);
 
     this.state = {
-      activeGifIndex: 0
+      activeGifIndex: 0,
     };
   }
 
   componentWillReceiveProps(nextProps) {
     if (this.props.transitionTime !== nextProps.transitionTime) {
-
       clearInterval(this.rotateGifInterval);
 
       this.rotateGifInterval = setInterval(() => {
         this.setState({
-          activeGifIndex: this.state.activeGifIndex + 1
+          activeGifIndex: this.state.activeGifIndex + 1,
         }, () => {
           if (this.state.activeGifIndex > this.props.gifQueryOffset - 5) {
             this.props.getMoreGifs();
@@ -29,7 +29,7 @@ class GifRotator extends Component {
 
     if (nextProps.resetActiveGif) {
       this.setState({
-        activeGifIndex: 0
+        activeGifIndex: 0,
       }, () => {
         this.props.clearResetActiveGif();
       });
@@ -39,7 +39,7 @@ class GifRotator extends Component {
   render() {
     return (
       <div className="gif-rotator">
-        {this.props.isPlaying && 
+        {this.props.isPlaying &&
           <div className="gif-rotator__bg">
             <img src={gifNotesLogo} alt="" />
           </div>
@@ -50,13 +50,28 @@ class GifRotator extends Component {
               activeGifIndex={this.state.activeGifIndex}
               gifObject={gif}
               gifId={index}
-              key={index}
+              key={gif.id}
             />
-          )
+          );
         })}
       </div>
     );
   }
 }
+
+GifRotator.propTypes = {
+  clearResetActiveGif: PropTypes.func.isRequired,
+  getMoreGifs: PropTypes.func.isRequired,
+  gifs: PropTypes.arrayOf(PropTypes.object), // eslint-disable-line 
+  gifQueryOffset: PropTypes.number.isRequired,
+  isPlaying: PropTypes.bool,
+  resetActiveGif: PropTypes.bool.isRequired,
+  transitionTime: PropTypes.number,
+};
+
+GifRotator.defaultProps = {
+  isPlaying: true,
+  transitionTime: 0,
+};
 
 export default GifRotator;

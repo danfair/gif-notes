@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import SpotifyPlayerContainer from './SpotifyPlayerContainer';
 import poweredByGiphyImg from '../img/giphy.png';
 

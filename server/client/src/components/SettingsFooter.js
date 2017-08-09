@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Cookies from 'universal-cookie';
+import PropTypes from 'prop-types';
 import twIcon from '../img/tw.png';
 import fbIcon from '../img/fb.png';
 import spotifyIcon from '../img/spotify.png';

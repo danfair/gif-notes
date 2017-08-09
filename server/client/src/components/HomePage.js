@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Cookies from 'universal-cookie';
+
 import Hero from './Hero';
 import CardRow from './CardRow';
 import Footer from './Footer';
@@ -13,16 +14,9 @@ class Login extends Component {
 
     this.state = {
       message: null,
-      accessToken: null,
-      refreshToken: null
-    };
-  }
-
-  componentDidMount() {
-    this.setState({
       accessToken: cookies.get('gn_at'),
-      refreshToken: cookies.get('gn_rt')
-    });
+      refreshToken: cookies.get('gn_rt'),
+    };
   }
 
   render() {
