@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router';
-import PropTypes from 'prop-types';
-
 import axios from 'axios';
 import Modal from 'react-awesome-modal';
 import Cookies from 'universal-cookie';
@@ -13,8 +11,8 @@ import PlayerHeader from './PlayerHeader';
 import PlayerFooter from './PlayerFooter';
 import GifRotator from './GifRotator';
 import NotPlaying from './NotPlaying';
-
 import defaultSettings from '../data/defaultSettings';
+
 const cookies = new Cookies();
 
 class Player extends Component {
@@ -30,13 +28,13 @@ class Player extends Component {
       isPlaying: null,
       isPlaylistPickerOpen: false,
       isSettingsModalOpen: false,
-      playlistId: null, 
+      playlistId: null,
       refreshToken: cookies.get('gn_rt'),
       resetActiveGif: false,
       settings: {},
       songId: null,
       songTitle: null,
-      songArtist: null
+      songArtist: null,
     };
 
     this.clearResetActiveGif = this.clearResetActiveGif.bind(this);
@@ -60,11 +58,11 @@ class Player extends Component {
       cookies.set('gn_settings', defaultSettings);
     }
 
-    let playlistUri = cookies.get('gn_pu') || null;
+    const playlistUri = cookies.get('gn_pu') || null;
 
-    this.setState({
-      settings, 
-      playlistUri
+    this.setState({  // eslint-disable-line
+      settings,
+      playlistUri,
     }, this.getCurrentTrack);
 
     // TODO: replace updating data with sockets?
@@ -73,42 +71,15 @@ class Player extends Component {
     document.addEventListener('mousemove', this.updateMouseMovement, false);
   }
 
-  updateMouseMovement() {
-    this.setState({
-      isMouseMovingAround: true
-    }, () => {
-      clearTimeout(this.mouseMovementTimeout);
-      this.mouseMovementTimeout = setTimeout(() => {
-        this.setState({
-          isMouseMovingAround: false
-        });
-      }, 4000);
-    });
-  }
-
-  updateToken() {
-    axios(`/refresh/${this.state.refreshToken}`)
-      .then((response) => {
-        this.setState({
-          accessToken: response.data.access_token
-        }, () => {
-          cookies.set('gn_at', response.data.access_token);
-        });
-      })
-      .catch(function (err) {
-        console.error('updateTokenError:', err);
-      });
-  }
-
   getCurrentTrack() {
     axios('https://api.spotify.com/v1/me/player', {
       headers: {
-        'Authorization': `Bearer ${this.state.accessToken}`
-      }
+        Authorization: `Bearer ${this.state.accessToken}`,
+      },
     })
       .then((response) => {
         // update info if the song id is different than id in state
-        if (response.data.item.id !== this.state.songId || response.data.is_playing !== this.state.isPlaying)  {
+        if (response.data.item.id !== this.state.songId || response.data.is_playing !== this.state.isPlaying) {
           const artists = response.data.item.artists.map((artist) => {
             return artist.name;
           }).join(', ');
@@ -121,7 +92,7 @@ class Player extends Component {
             playlistUri: response.data.item.uri,
             gifQueryOffset: 0,
             resetActiveGif: true,
-            isPlayInstructionsVisible: this.state.isPlayInstructionsVisible && !response.data.is_playing
+            isPlayInstructionsVisible: this.state.isPlayInstructionsVisible && !response.data.is_playing,
           }, () => {
             // if the player is now playing, get new gifs
             // otherwise get sad gifs
@@ -147,26 +118,6 @@ class Player extends Component {
       });
   }
 
-  toggleSettingsModal() {
-    this.setState({
-      isSettingsModalOpen: !this.state.isSettingsModalOpen
-    });
-  }
-
-  toggleSpotifyPlayer() {
-    this.setState((prevState, props) => {
-      let settings = prevState.settings;
-      settings.showPlayer = !settings.showPlayer;
-      return {settings};
-    });
-  }
-
-  togglePlaylistPicker() {
-    this.setState({
-      isPlaylistPickerOpen: !this.state.isPlaylistPickerOpen
-    });
-  }
-
   getGifQueryString(artists, songTitle) {
     let gifQuery;
     if (this.state.settings.searchTerms === 'both') {
@@ -183,13 +134,56 @@ class Player extends Component {
       gifQuery = encodeURIComponent(songTitle);
     }
 
-    let queryString = querystring.stringify({
+    const queryString = querystring.stringify({
       query: gifQuery,
       gifRating: this.state.settings.gifRating,
-      offset: this.state.gifQueryOffset
+      offset: this.state.gifQueryOffset,
     });
 
     return queryString;
+  }
+
+  getMoreGifs(queryString) {
+    if (!queryString) {
+      queryString = this.state.isPlaying ? this.getGifQueryString(this.state.songArtist, this.state.songTitle) : 'sad';  // eslint-disable-line no-param-reassign
+    }
+
+    axios(`/gifs?query=${queryString}`)
+      .then((response) => {
+        if (response.data.length) {
+          this.setState((prevState) => {
+            return {
+              gifs: prevState.gifs.concat(response.data),
+              gifQueryOffset: prevState.gifQueryOffset + response.data.length,
+            };
+          });
+        } else {
+          this.getMoreGifs(this.getGifQueryString('crazy', 'random'));
+        }
+      })
+      .catch((err) => {
+        console.error('getMoreGifs error:', err);
+      });
+  }
+
+  toggleSettingsModal() {
+    this.setState({
+      isSettingsModalOpen: !this.state.isSettingsModalOpen,
+    });
+  }
+
+  toggleSpotifyPlayer() {
+    this.setState((prevState) => {
+      let settings = prevState.settings;
+      settings.showPlayer = !settings.showPlayer;
+      return { settings };
+    });
+  }
+
+  togglePlaylistPicker() {
+    this.setState({
+      isPlaylistPickerOpen: !this.state.isPlaylistPickerOpen,
+    });
   }
 
   updateGifs(artists, songTitle) {
@@ -199,73 +193,77 @@ class Player extends Component {
       .then((response) => {
         this.setState({
           gifs: response.data,
-          gifQueryOffset: this.state.gifQueryOffset + response.data.length || response.data.length
+          gifQueryOffset: this.state.gifQueryOffset + response.data.length || response.data.length,
         });
       })
       .catch((err) => {
         console.error('updateGifsError:', err);
-      })
+      });
   }
 
-  getMoreGifs(queryString) {
-    if (!queryString) {
-      queryString = this.state.isPlaying ? this.getGifQueryString(this.state.songArtist, this.state.songTitle) : 'sad';
-    }
-
-    axios(`/gifs?query=${queryString}`)
-      .then((response) => {
-        if (response.data.length) {
-          this.setState((prevState, props) => {
-            return {
-              gifs: prevState.gifs.concat(response.data),
-              gifQueryOffset: prevState.gifQueryOffset + response.data.length
-            }
-          });
-        } else {
-          this.getMoreGifs(this.getGifQueryString('crazy', 'random'));
-        }
-      })
-      .catch((err) => {
-        console.error('getMoreGifs error:', err);
-      })
-  }
-
-  updateSettings(settings) {
+  updateMouseMovement() {
     this.setState({
-      settings
+      isMouseMovingAround: true,
     }, () => {
-      cookies.set('gn_settings', settings);
+      clearTimeout(this.mouseMovementTimeout);
+      this.mouseMovementTimeout = setTimeout(() => {
+        this.setState({
+          isMouseMovingAround: false,
+        });
+      }, 4000);
     });
   }
 
   updatePlaylistUri(playlistUri) {
-    let tempSettings = this.state.settings;
+    const tempSettings = this.state.settings;
     tempSettings.showPlayer = true;
 
     this.setState({
       playlistUri,
       isPlaylistPickerOpen: false,
       isPlayInstructionsVisible: true,
-      settings: tempSettings
+      settings: tempSettings,
     }, () => {
       cookies.set('gn_pu', playlistUri);
       setTimeout(() => {
         this.setState({
-          isPlayInstructionsVisible: false
-        })
+          isPlayInstructionsVisible: false,
+        });
       }, 5000);
     });
   }
 
+  updateSettings(settings) {
+    this.setState({
+      settings,
+    }, () => {
+      cookies.set('gn_settings', settings);
+    });
+  }
+
+  updateToken() {
+    axios(`/refresh/${this.state.refreshToken}`)
+      .then((response) => {
+        this.setState({
+          accessToken: response.data.access_token,
+        }, () => {
+          cookies.set('gn_at', response.data.access_token);
+        });
+      })
+      .catch((err) => {
+        console.error('updateTokenError:', err);
+      });
+  }
+
   clearResetActiveGif() {
     this.setState({
-      resetActiveGif: false
-    })
+      resetActiveGif: false,
+    });
   }
 
   render() {
     if (!this.state.accessToken || !this.state.refreshToken) {
-      return <Redirect push to="/" />
+      return <Redirect push to="/" />;
     }
 
     return (
@@ -287,7 +285,7 @@ class Player extends Component {
           clearResetActiveGif={this.clearResetActiveGif}
           isPlaying={this.state.isPlaying}
         />
-        {this.state.isPlaying === false && !this.state.isPlaylistPickerOpen && !this.state.isSettingsModalOpen && 
+        {this.state.isPlaying === false && !this.state.isPlaylistPickerOpen && !this.state.isSettingsModalOpen &&
           <NotPlaying />
         }
         <PlayerFooter
@@ -298,16 +296,16 @@ class Player extends Component {
           showPlayInstructions={this.state.isPlayInstructionsVisible}
           isMouseMovingAround={this.state.isMouseMovingAround}
         />
-        <div className="player__overlay"></div>
+        <div className="player__overlay" />
         <div className="modal-container">
-          <Modal 
-            visible={this.state.isSettingsModalOpen} 
-            width="600" 
-            height="600" 
-            effect="fadeInUp" 
+          <Modal
+            visible={this.state.isSettingsModalOpen}
+            width="600"
+            height="600"
+            effect="fadeInUp"
             onClickAway={this.toggleSettingsModal}
           >
-            <Settings 
+            <Settings
               settings={this.state.settings}
               updateSettings={this.updateSettings}
               closeSettingsModal={this.toggleSettingsModal}
@@ -315,11 +313,11 @@ class Player extends Component {
           </Modal>
         </div>
         <div className="modal-container">
-          <Modal 
-            visible={this.state.isPlaylistPickerOpen} 
-            width="600" 
-            height="600" 
-            effect="fadeInUp" 
+          <Modal
+            visible={this.state.isPlaylistPickerOpen}
+            width="600"
+            height="600"
+            effect="fadeInUp"
             onClickAway={this.togglePlaylistPicker}
           >
             <PlaylistPicker
@@ -328,7 +326,7 @@ class Player extends Component {
               closePlaylistPicker={this.togglePlaylistPicker}
               updateToken={this.updateToken}
             />
-          </Modal>  
+          </Modal>
         </div>
       </div>
     );

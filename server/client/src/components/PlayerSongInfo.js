@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const PlayerSongInfo = ({songArtist, songTitle, showArtistSong, isPlaying}) => {
+const PlayerSongInfo = ({ songArtist, songTitle, showArtistSong, isPlaying }) => {
   const displayClassName = showArtistSong === true && isPlaying ? 'player__playing-info open' : 'player__playing-info';
   return (
     <div className={displayClassName}>
@@ -9,6 +9,13 @@ const PlayerSongInfo = ({songArtist, songTitle, showArtistSong, isPlaying}) => {
       <h1>{songArtist}</h1>
     </div>
   );
-}
+};
+
+PlayerSongInfo.propTypes = {
+  songArtist: PropTypes.string.isRequired,
+  songTitle: PropTypes.string.isRequired,
+  showArtistSong: PropTypes.string.isRequired,
+  isPlaying: PropTypes.bool.isRequired,
+};
 
 export default PlayerSongInfo;

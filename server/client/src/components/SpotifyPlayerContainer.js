@@ -1,28 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import SpotifyPlayer from 'react-spotify-player';
 import SpotifyPlayerControls from './SpotifyPlayerControls';
 
-class SpotifyPlayerContainer extends Component {
-  render() {
-    let statusClassName = this.props.showPlayer === true ? 'spotify-player open' : 'spotify-player';
-    return (
-      <div className={statusClassName}>
-        <SpotifyPlayerControls
-          showPlayer={this.props.showPlayer}
-          showPlayInstructions={this.props.showPlayInstructions}
-          togglePlaylistPicker={this.props.togglePlaylistPicker}
-          toggleSpotifyPlayer={this.props.toggleSpotifyPlayer}
-        />
-        <SpotifyPlayer
-          uri={this.props.playlistUri}
-          size="compact"
-          view="coverart"
-          theme="black"
-        />
-      </div>
-    );
-  }
-}
+const SpotifyPlayerContainer = ({ playlistUri, showPlayer, showPlayInstructions, togglePlaylistPicker, toggleSpotifyPlayer }) => {
+  const statusClassName = showPlayer === true ? 'spotify-player open' : 'spotify-player';
+
+  return (
+    <div className={statusClassName}>
+      <SpotifyPlayerControls
+        showPlayer={showPlayer}
+        showPlayInstructions={showPlayInstructions}
+        togglePlaylistPicker={togglePlaylistPicker}
+        toggleSpotifyPlayer={toggleSpotifyPlayer}
+      />
+      <SpotifyPlayer
+        uri={playlistUri}
+        size="compact"
+        view="coverart"
+        theme="black"
+      />
+    </div>
+  );
+};
+
+SpotifyPlayerContainer.propTypes = {
+  playlistUri: PropTypes.string.isRequired,
+  showPlayer: PropTypes.bool.isRequired,
+  showPlayInstructions: PropTypes.bool.isRequired,
+  togglePlaylistPicker: PropTypes.func.isRequired,
+  toggleSpotifyPlayer: PropTypes.func.isRequired,
+};
 
 export default SpotifyPlayerContainer;

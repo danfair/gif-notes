@@ -12,12 +12,12 @@ class Settings extends Component {
   }
 
   updateSettings() {
-    let newSettings = {
+    const newSettings = {
       transitionTime: this.transitionInput.value,
       gifRating: this.gifRatingInput.value,
       searchTerms: this.searchTermInput.value,
       showPlayer: this.showPlayerInput.checked,
-      showArtistSong: this.showArtistSongInput.checked
+      showArtistSong: this.showArtistSongInput.checked,
     };
 
     this.props.updateSettings(newSettings);
@@ -26,7 +26,7 @@ class Settings extends Component {
   render() {
     return (
       <div className="modal__content">
-        <button 
+        <button
           onClick={this.props.closeSettingsModal}
           className="modal__close-button"
         >
@@ -40,23 +40,22 @@ class Settings extends Component {
             <span className="settings__seconds">{this.props.settings.transitionTime} seconds</span>
             <input
               type="range"
-              ref={transitionInput => this.transitionInput = transitionInput}
-              onChange={this.updateSettings} 
+              ref={(transitionInput) => { this.transitionInput = transitionInput; }}
+              onChange={this.updateSettings}
               name="gif-transition"
               value={this.props.settings.transitionTime}
               min="4"
               max="12"
               step="1"
               className="gn__input-range"
-            >
-            </input>
+            />
           </div>
           <div className="row--half">
             <div className="pre-label">Maximum GIF rating</div>
             <div className="gn__select">
-              <select 
-                ref={gifRatingInput => this.gifRatingInput = gifRatingInput}
-                onChange={this.updateSettings} 
+              <select
+                ref={(gifRatingInput) => { this.gifRatingInput = gifRatingInput; }}
+                onChange={this.updateSettings}
                 name="gif-rating"
                 value={this.props.settings.gifRating}
               >
@@ -70,9 +69,9 @@ class Settings extends Component {
           <div className="row--half">
             <div className="pre-label">Search Terms</div>
             <div className="gn__select">
-              <select 
-                ref={searchTermInput => this.searchTermInput = searchTermInput}
-                onChange={this.updateSettings} 
+              <select
+                ref={(searchTermInput) => { this.searchTermInput = searchTermInput; }}
+                onChange={this.updateSettings}
                 name="seach-terms"
                 value={this.props.settings.searchTerms}
               >
@@ -87,14 +86,14 @@ class Settings extends Component {
             <div className="gn__checkbox">
               <label htmlFor="show-player">
                 <input
-                  type="checkbox" 
-                  ref={showPlayerInput => this.showPlayerInput = showPlayerInput}
-                  onChange={this.updateSettings} 
+                  type="checkbox"
+                  ref={(showPlayerInput) => { this.showPlayerInput = showPlayerInput; }}
+                  onChange={this.updateSettings}
                   name="show-player"
                   id="show-player"
                   checked={this.props.settings.showPlayer}
-                ></input>
-                <div className="box"></div>
+                />
+                <div className="box" />
               </label>
             </div>
           </div>
@@ -103,14 +102,14 @@ class Settings extends Component {
             <div className="gn__checkbox">
               <label htmlFor="show-artist-song">
                 <input
-                  type="checkbox" 
-                  ref={showArtistSongInput => this.showArtistSongInput = showArtistSongInput}
-                  onChange={this.updateSettings} 
+                  type="checkbox"
+                  ref={(showArtistSongInput) => { this.showArtistSongInput = showArtistSongInput; }}
+                  onChange={this.updateSettings}
                   name="show-artist-song"
                   id="show-artist-song"
                   checked={this.props.settings.showArtistSong}
-                ></input>
-                <div className="box"></div>
+                />
+                <div className="box" />
               </label>
             </div>
           </div>
@@ -120,5 +119,17 @@ class Settings extends Component {
     );
   }
 }
+
+Settings.propTypes = {
+  closeSettingsModal: PropTypes.func.isRequired,
+  settings: PropTypes.shape({
+    transitionTime: PropTypes.number,
+    gifRating: PropTypes.string,
+    searchTerms: PropTypes.string,
+    showPlayer: PropTypes.bool,
+    showArtistSong: PropTypes.bool,
+  }).isRequired,
+  updateSettings: PropTypes.func.isRequired,
+};
 
 export default Settings;

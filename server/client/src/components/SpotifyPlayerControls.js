@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import closeIcon from '../img/close.png';
 import arrowIcon from '../img/arrow.png';
 
-const SpotifyPlayerControls = ({showPlayer, showPlayInstructions, togglePlaylistPicker, toggleSpotifyPlayer}) => {
+const SpotifyPlayerControls = ({ showPlayer, showPlayInstructions, togglePlaylistPicker, toggleSpotifyPlayer }) => {
   return (
     <div className="spotify-player__btn-shelf">
       <button className="spotify-player__btn" onClick={togglePlaylistPicker}>Playlists</button>
@@ -23,6 +23,13 @@ const SpotifyPlayerControls = ({showPlayer, showPlayInstructions, togglePlaylist
       }
     </div>
   );
-}
+};
+
+SpotifyPlayerControls.propTypes = {
+  showPlayer: PropTypes.bool.isRequired,
+  showPlayInstructions: PropTypes.bool.isRequired,
+  togglePlaylistPicker: PropTypes.func.isRequired,
+  toggleSpotifyPlayer: PropTypes.func.isRequired,
+};
 
 export default SpotifyPlayerControls;

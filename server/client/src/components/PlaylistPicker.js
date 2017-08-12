@@ -10,7 +10,7 @@ class PlaylistPicker extends Component {
     super(props);
 
     this.state = {
-      playlists: []
+      playlists: [],
     };
 
     this.getPlaylists = this.getPlaylists.bind(this);
@@ -23,25 +23,25 @@ class PlaylistPicker extends Component {
   getPlaylists() {
     axios('https://api.spotify.com/v1/me/playlists/?limit=50', {
       headers: {
-        'Authorization': `Bearer ${this.props.accessToken}`
-      }
+        Authorization: `Bearer ${this.props.accessToken}`,
+      },
     })
       .then((response) => {
         this.setState({
-          playlists: response.data.items
-        })
+          playlists: response.data.items,
+        });
       })
       .catch((err) => {
         console.error('playlistPicker error:', err);
         this.props.updateToken();
         this.getPlaylists();
-      })
+      });
   }
 
   render() {
     return (
       <div className="modal__content">
-        <button 
+        <button
           onClick={this.props.closePlaylistPicker}
           className="modal__close-button"
         >
@@ -50,19 +50,26 @@ class PlaylistPicker extends Component {
         </button>
         <h1 className="modal__title">Playlists</h1>
         <div className="playlists">
-          {this.state.playlists.map((playlist, index) => {
+          {this.state.playlists.map((playlist) => {
             return (
               <PlaylistButton
-                key={index}
+                key={playlist.id}
                 updatePlaylistUri={this.props.updatePlaylistUri}
                 playlist={playlist}
               />
-            )
+            );
           })}
         </div>
       </div>
     );
   }
 }
+
+PlaylistPicker.propTypes = {
+  accessToken: PropTypes.string.isRequired,
+  closePlaylistPicker: PropTypes.func.isRequired,
+  updatePlaylistUri: PropTypes.func.isRequired,
+  updateToken: PropTypes.func.isRequired,
+};
 
 export default PlaylistPicker;

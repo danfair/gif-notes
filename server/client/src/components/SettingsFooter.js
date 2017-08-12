@@ -4,16 +4,17 @@ import PropTypes from 'prop-types';
 import twIcon from '../img/tw.png';
 import fbIcon from '../img/fb.png';
 import spotifyIcon from '../img/spotify.png';
+
 const cookies = new Cookies();
 
 class SettingsFooter extends Component {
 
-  logout() {
+  static logout() {
     cookies.remove('gn_at');
     cookies.remove('gn_rt');
     cookies.remove('gn_pu');
     cookies.remove('gn_settings');
-    window.location.replace('/');
+    window.location.replace('/');  // eslint-disable-line
   }
 
   render() {
@@ -33,7 +34,7 @@ class SettingsFooter extends Component {
         </button>
       </div>
     );
-  }  
+  }
 }
 
 export default SettingsFooter;
