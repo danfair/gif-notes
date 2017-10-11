@@ -40,9 +40,7 @@ class GifRotator extends Component {
     return (
       <div className="gif-rotator">
         {this.props.isPlaying &&
-          <div className="gif-rotator__bg">
-            <img src={gifNotesLogo} alt="" />
-          </div>
+          <img src={gifNotesLogo} alt="" />
         }
         {this.props.gifs.length > 0 && this.props.gifs.map((gif, index) => {
           return (
