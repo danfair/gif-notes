@@ -50,6 +50,7 @@ class Player extends Component {
   }
 
   componentDidMount() {
+    console.log('this.props', this.props);
     let settings;
     if (cookies.get('gn_settings')) {
       settings = cookies.get('gn_settings');
@@ -61,14 +62,16 @@ class Player extends Component {
     const playlistUri = cookies.get('gn_pu') || null;
 
     this.setState({  // eslint-disable-line
-      settings,
+      // settings,
       playlistUri,
     }, this.getCurrentTrack);
+
+    this.props.updateSettings(settings);
 
     // TODO: replace updating data with sockets?
     this.songRefreshInterval = setInterval(this.getCurrentTrack, 2000);
 
-    document.addEventListener('mousemove', this.updateMouseMovement, false);
+    document.addEventListener('mousemove', this.updateMouseMovement, false);  // eslint-disable-line
   }
 
   getCurrentTrack() {
@@ -120,7 +123,7 @@ class Player extends Component {
 
   getGifQueryString(artists, songTitle) {
     let gifQuery;
-    if (this.state.settings.searchTerms === 'both') {
+    if (this.props.settings.searchTerms === 'both') {
       // mix it up so it's not always the same gifs
       // for same artists
       if (Math.random() >= 0.5) {
@@ -128,7 +131,7 @@ class Player extends Component {
       } else {
         gifQuery = encodeURIComponent(`${songTitle} ${artists}`);
       }
-    } else if (this.state.settings.searchTerms === 'artist') {
+    } else if (this.props.settings.searchTerms === 'artist') {
       gifQuery = encodeURIComponent(artists);
     } else {
       gifQuery = encodeURIComponent(songTitle);
@@ -136,7 +139,7 @@ class Player extends Component {
 
     const queryString = querystring.stringify({
       query: gifQuery,
-      gifRating: this.state.settings.gifRating,
+      gifRating: this.props.settings.gifRating,
       offset: this.state.gifQueryOffset,
     });
 
@@ -215,7 +218,7 @@ class Player extends Component {
   }
 
   updatePlaylistUri(playlistUri) {
-    const tempSettings = this.state.settings;
+    const tempSettings = this.props.settings;
     tempSettings.showPlayer = true;
 
     this.setState({
@@ -271,14 +274,14 @@ class Player extends Component {
         <PlayerHeader
           songArtist={this.state.songArtist}
           songTitle={this.state.songTitle}
-          showArtistSong={this.state.settings.showArtistSong}
+          showArtistSong={this.props.settings.showArtistSong}
           isPlaying={this.state.isPlaying}
           toggleSettingsModal={this.toggleSettingsModal}
           isMouseMovingAround={this.state.isMouseMovingAround}
         />
         <GifRotator
           gifs={this.state.gifs}
-          transitionTime={this.state.settings.transitionTime}
+          transitionTime={this.props.settings.transitionTime}
           getMoreGifs={this.getMoreGifs}
           gifQueryOffset={this.state.gifQueryOffset}
           resetActiveGif={this.state.resetActiveGif}
@@ -292,7 +295,7 @@ class Player extends Component {
           playlistUri={this.state.playlistUri}
           toggleSpotifyPlayer={this.toggleSpotifyPlayer}
           togglePlaylistPicker={this.togglePlaylistPicker}
-          showPlayer={this.state.settings.showPlayer}
+          showPlayer={this.props.settings.showPlayer}
           showPlayInstructions={this.state.isPlayInstructionsVisible}
           isMouseMovingAround={this.state.isMouseMovingAround}
         />
@@ -306,8 +309,9 @@ class Player extends Component {
             onClickAway={this.toggleSettingsModal}
           >
             <Settings
-              settings={this.state.settings}
-              updateSettings={this.updateSettings}
+              /* settings={this.props.settings} */
+              settings={this.props.settings}
+              updateSettings={this.props.updateSettings}
               closeSettingsModal={this.toggleSettingsModal}
             />
           </Modal>
